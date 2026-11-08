@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Grab-and-Go Family File | The Snag Tag</title>
+<meta name="description" content="A short, fillable family file: who to call, health basics, kids, pets, money and digital life in one place, so your family knows what to do tonight if you are in hospital. Works offline, prints to A4 or US Letter.">
+<style id="pageSize">@page{size:A4;margin:15mm}</style>
+<style>
+:root{
+  --bg:#F7F5F1;--paper:#FFFFFF;--ink:#2A2927;--soft:#6B665E;--line:#E3DED6;
+  --sage:#4A4640;--sage-l:#EEEBE5;--coral:#C9A24B;--coral-l:#F7F0DE;
+  --sun:#B8A792;--sun-l:#F3EFE8;--gold-d:#8C6B1E;--on-pri:#FFFFFF;--on-acc:#2A2927;--focus:#2F6FDB;
+  --r:14px;--fs:16px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+:root[data-theme="dark"]{
+  --bg:#1C1B19;--paper:#252421;--ink:#EFECE6;--soft:#B3ADA3;--line:#3A3732;
+  --sage:#D9D3C8;--sage-l:#302E2A;--coral:#D4B062;--coral-l:#3A3222;--sun:#A8987F;--sun-l:#2F2B25;
+  --gold-d:#E2C27A;--on-pri:#1C1B19;--on-acc:#1C1B19;color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{font-size:var(--fs)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-text-size-adjust:100%}
+a{color:var(--gold-d)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:8px 12px;z-index:99}
+.skip:focus{left:8px}
+
+/* Top bar */
+.top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
+.top-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.tabmark{width:38px;height:30px;flex:none;position:relative}
+.tabmark:before{content:"";position:absolute;left:0;top:0;width:18px;height:8px;background:var(--coral);border-radius:5px 5px 0 0}
+.tabmark:after{content:"";position:absolute;left:0;top:6px;width:38px;height:24px;background:var(--sage);border-radius:0 6px 6px 6px}
+.brand h1{font-family:var(--serif);font-size:1.2rem;margin:0;line-height:1.15}
+.brand small{display:block;color:var(--soft);font-size:.78rem}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.9rem;display:inline-flex;align-items:center;gap:6px;min-height:40px}
+.btn:hover{border-color:var(--sage)}
+.btn.pri{background:var(--sage);border-color:var(--sage);color:var(--on-pri)}
+.btn.cor{background:var(--coral);border-color:var(--coral);color:var(--on-acc);font-weight:600}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 11px;min-height:34px;font-size:.84rem}
+.saved{font-size:.8rem;color:var(--soft);min-width:60px}
+
+/* Layout */
+.wrap{max-width:1180px;margin:0 auto;padding:18px 16px 60px;display:grid;grid-template-columns:260px 1fr;gap:22px}
+nav.side{position:sticky;top:78px;align-self:start}
+.prog{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.prog b{font-family:var(--serif);font-size:1.6rem}
+.bar{height:8px;background:var(--sage-l);border-radius:9px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--coral);border-radius:9px;width:0;transition:width .3s}
+.navlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.navlist button{width:100%;text-align:left;border:0;background:transparent;padding:9px 12px;border-radius:10px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.navlist button:hover{background:var(--sage-l)}
+.navlist button[aria-current="page"]{background:var(--paper);box-shadow:inset 4px 0 0 var(--coral);font-weight:600}
+.navlist .num{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:.75rem;background:var(--sage-l);color:var(--ink);font-weight:700}
+.navlist .done .num{background:var(--coral);color:var(--on-acc)}
+.navlist .pct{margin-left:auto;font-size:.75rem;color:var(--soft)}
+.mobnav{display:none}
+
+/* Folder sections */
+.folder{position:relative;margin-top:18px}
+.folder .tab{display:inline-block;background:var(--sage);color:var(--on-pri);padding:6px 18px 8px;border-radius:12px 12px 0 0;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.folder .sheet{background:var(--paper);border:1px solid var(--line);border-radius:0 var(--r) var(--r) var(--r);padding:26px;box-shadow:0 1px 0 var(--line),0 10px 30px -22px rgba(42,41,39,.35)}
+.folder h2:focus{outline:none}
+.folder h2{font-family:var(--serif);font-size:1.75rem;margin:0 0 6px;line-height:1.2}
+.lead{color:var(--soft);margin:0 0 18px;max-width:62ch}
+.grp{margin:26px 0 0;padding-top:20px;border-top:1px dashed var(--line)}
+.grp:first-of-type{border-top:0;padding-top:0;margin-top:8px}
+.grp h3{font-family:var(--serif);font-size:1.2rem;margin:0 0 4px}
+.hint{font-size:.88rem;color:var(--soft);margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
+.fld{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fld.wide{grid-column:1/-1}
+.fld label{font-size:.86rem;font-weight:600}
+.fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px;min-height:44px}
+.fld textarea{min-height:88px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--sage);background:var(--paper)}
+.fld .sub{font-size:.78rem;color:var(--soft)}
+
+.note{border-radius:12px;padding:12px 14px;margin:10px 0 0;font-size:.92rem;overflow-wrap:anywhere}
+.note.safe{background:var(--coral-l);border-left:4px solid var(--coral)}
+.note.tip{background:var(--sage-l);border-left:4px solid var(--sage)}
+.note.sun{background:var(--sun-l);border-left:4px solid var(--sun)}
+.note b{margin-right:4px}
+
+/* Lists */
+.items{display:flex;flex-direction:column;gap:12px}
+.item{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--bg);position:relative}
+.item .ihead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
+.item .ihead span{font-size:.78rem;font-weight:700;color:var(--gold-d);text-transform:uppercase;letter-spacing:.05em}
+.rm{border:0;background:transparent;color:var(--gold-d);cursor:pointer;font-size:.85rem;padding:6px 8px;border-radius:8px;min-height:34px}
+.rm:hover{background:var(--coral-l)}
+.add{margin-top:12px}
+.empty{color:var(--soft);font-size:.9rem;font-style:italic}
+
+/* Checks */
+.checks{display:flex;flex-direction:column;gap:8px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);cursor:pointer}
+.chk input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--gold-d)}
+.chk.on{background:var(--coral-l);border-color:transparent}
+.chk .t{font-weight:600}
+.chk .d{display:block;font-size:.86rem;color:var(--soft);font-weight:400}
+.cn{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg)}
+.cn .chk{border:0;padding:0;background:transparent}
+.cn input[type=text]{margin-top:8px;width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--paper);min-height:42px}
+.cn.on{background:var(--coral-l)}
+
+/* Start + tonight */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--bg)}
+.card h4{margin:0 0 8px;font-family:var(--serif);font-size:1.05rem;display:flex;gap:8px;align-items:center}
+.card h4 .dot{width:10px;height:10px;border-radius:50%;background:var(--coral);flex:none}
+.card p,.card li{margin:0;font-size:.93rem}
+.card ul{margin:0;padding-left:18px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.93rem}
+.kv dt{color:var(--soft)}
+.kv dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.miss{color:var(--gold-d);font-weight:400;font-style:italic}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start}
+.steps li:before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--coral);color:var(--on-acc);display:grid;place-items:center;font-weight:700;font-size:.85rem;flex:none}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:28px;flex-wrap:wrap}
+.foot{color:var(--soft);font-size:.8rem;text-align:center;margin-top:28px;grid-column:1/-1}
+
+/* Modal */
+dialog{border:0;border-radius:16px;padding:0;max-width:520px;width:calc(100% - 32px);background:var(--paper);color:var(--ink);box-shadow:0 30px 80px -20px rgba(0,0,0,.4)}
+dialog::backdrop{background:rgba(28,27,25,.45)}
+.dlg{padding:22px}
+.dlg h3{font-family:var(--serif);margin:0 0 12px}
+.dlg .grid{grid-template-columns:1fr}
+.dlg .row{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:.9rem;transition:transform .25s;z-index:60;visibility:hidden}
+.toast.show{transform:translateX(-50%) translateY(0);visibility:visible}
+
+#printArea{display:none}
+
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr;padding-top:12px}
+  nav.side{display:none}
+  .mobnav{display:block;position:sticky;top:64px;z-index:15;background:var(--bg);padding:8px 0}
+  .mobnav select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--paper);min-height:46px;font-weight:600}
+  .mobnav .bar{margin-top:8px}
+}
+@media (max-width:600px){
+  .grid,.cards{grid-template-columns:1fr}
+  .folder .sheet{padding:18px}
+  .folder h2{font-size:1.45rem}
+  .brand h1{font-size:1.1rem}
+  .brand{flex:1 1 100%}
+  .saved{position:absolute;right:16px;top:14px;min-width:0}
+  .top-in{gap:8px;position:relative}
+  .tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;gap:6px}
+  .tools .btn{flex-direction:column;gap:2px;padding:6px 4px;border-radius:12px;font-size:.72rem;min-height:48px;justify-content:center}
+  .tools .lbl{display:block;white-space:nowrap}
+  .tools .lp{display:none}
+  .mobnav{position:static}
+}
+
+/* Print binder */
+@media print{
+  body{background:#fff;color:#111;font-size:11pt}
+  .top,.wrap,.toast,dialog,.skip{display:none!important}
+  #printArea{display:block}
+  .pp{page-break-after:always;break-after:page}
+  .pp:last-child{page-break-after:auto;break-after:auto}
+  .pcover{text-align:center;padding-top:30mm}
+  .pcover .tabmark{margin:0 auto 10mm;transform:scale(2)}
+  .pcover h1{font-family:var(--serif);font-size:30pt;margin:0 0 4mm;color:#2A2927}
+  .pcover p{color:#444;margin:0 0 2mm}
+  .pcover .who{margin-top:16mm;font-size:16pt;font-family:var(--serif);border-bottom:1px solid #999;display:inline-block;min-width:110mm;padding-bottom:2mm}
+  .ptab{display:inline-block;background:#4A4640;color:#fff;padding:1.5mm 5mm;border-radius:3mm 3mm 0 0;font-size:8pt;font-weight:700;letter-spacing:.08em;text-transform:uppercase;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ph2{font-family:var(--serif);font-size:18pt;margin:0 0 1mm;border-top:2.5pt solid #4A4640;padding-top:3mm;color:#2A2927}
+  .plead{color:#555;font-size:9.5pt;margin:0 0 4mm}
+  .ph3{font-family:var(--serif);font-size:12.5pt;margin:5mm 0 2mm;color:#2A2927;page-break-after:avoid;break-after:avoid}
+  .pkv{width:100%;border-collapse:collapse;margin-bottom:2mm}
+  .pkv td{border-bottom:.5pt solid #bbb;padding:1.8mm 1mm;vertical-align:top;font-size:10pt}
+  .pkv td:first-child{width:42%;color:#444}
+  .pkv td:last-child{min-height:7mm}
+  .ptbl{width:100%;border-collapse:collapse;margin-bottom:2mm;page-break-inside:auto}
+  .ptbl th{background:#EEEBE5;text-align:left;font-size:8.5pt;padding:1.5mm;border:.5pt solid #bbb;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ptbl td{border:.5pt solid #bbb;padding:1.8mm 1.5mm;font-size:9.5pt;height:8mm;vertical-align:top}
+  .ptbl tr{page-break-inside:avoid;break-inside:avoid}
+  .pchk{list-style:none;padding:0;margin:0 0 2mm}
+  .pchk li{padding:1.4mm 0;font-size:10pt;border-bottom:.5pt dotted #ccc;page-break-inside:avoid}
+  .pchk .bx{display:inline-block;width:4mm;height:4mm;border:1pt solid #333;margin-right:2.5mm;vertical-align:-.6mm;text-align:center;line-height:3.6mm;font-size:8pt}
+  .pchk small{color:#555;display:block;margin-left:6.5mm}
+  .pnote{border-left:2.5pt solid #C9A24B;background:#F7F0DE;padding:2mm 3mm;font-size:9pt;margin:2mm 0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pfoot{font-size:7.5pt;color:#666;margin-top:5mm;border-top:.5pt solid #ccc;padding-top:2mm}
+  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+  .pbox{border:.8pt solid #999;border-radius:2mm;padding:3mm;page-break-inside:avoid}
+  .pbox h4{margin:0 0 1.5mm;font-family:var(--serif);font-size:11pt}
+  .pbox p,.pbox li{font-size:9.5pt;margin:0}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to content</a>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <span class="tabmark" aria-hidden="true"></span>
+      <div><h1>Grab-and-Go Family File</h1></div>
+    </div>
+    <span class="saved" id="saved" aria-live="polite"></span>
+    <div class="tools">
+      <button class="btn cor" id="bTonight" title="Open Tonight's Page"><span aria-hidden="true">&#9733;</span><span class="lbl">Tonight<span class="lp">'s Page</span></span></button>
+      <button class="btn" id="bPrint" title="Print your file"><span aria-hidden="true">&#9113;</span><span class="lbl">Print</span></button>
+      <button class="btn" id="bBackup" title="Backup and restore"><span aria-hidden="true">&#8681;</span><span class="lbl">Backup</span></button>
+      <button class="btn" id="bSettings" title="Personalise"><span aria-hidden="true">&#9881;</span><span class="lbl">Personalise</span></button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="side" aria-label="Sections">
+    <div class="prog"><div style="font-size:.8rem;color:var(--soft)">Your file is</div><b id="pAll">0%</b> <span style="color:var(--soft);font-size:.85rem">complete</span><div class="bar"><i id="pBar"></i></div></div>
+    <ul class="navlist" id="nav"></ul>
+  </nav>
+  <main id="main">
+    <div class="mobnav"><label for="mobSel" class="hint" style="margin:0 0 4px;display:block">Go to section</label><select id="mobSel"></select><div class="bar"><i id="pBarM"></i></div></div>
+    <div id="view"></div>
+  </main>
+  <p class="foot">An organiser, not legal, medical or financial advice. Your information stays in this browser on this device. Make a backup after each sitting.<br>&copy; The Snag Tag. For personal use.</p>
+</div>
+
+<div id="printArea" aria-hidden="true"></div>
+
+<dialog id="dSettings" aria-labelledby="dsT">
+  <div class="dlg">
+    <h3 id="dsT">Personalise your file</h3>
+    <div class="grid">
+      <div class="fld"><label for="sName">Whose file is this?</label><input id="sName" placeholder="e.g. Felicia's Family File"></div>
+      <div class="fld"><label for="sFor">This file is for</label><select id="sFor"><option value="me">Me</option><option value="partner">Me and my partner</option><option value="parent">A parent I am helping</option></select></div>
+      <div class="fld"><label for="sPaper">Print paper size</label><select id="sPaper"><option value="A4">A4 (210 x 297 mm / 8.3 x 11.7 in)</option><option value="letter">US Letter (216 x 279 mm / 8.5 x 11 in)</option></select></div>
+      <div class="fld"><label for="sText">Text size</label><select id="sText"><option value="16">Normal</option><option value="18">Large</option><option value="20">Extra large</option></select></div>
+      <div class="fld"><label for="sTheme">Colour mode</label><select id="sTheme"><option value="light">Light</option><option value="dark">Dark</option></select></div>
+    </div>
+    <div class="row"><button class="btn pri" data-close>Done</button></div>
+  </div>
+</dialog>
+
+<dialog id="dBackup" aria-labelledby="dbT">
+  <div class="dlg">
+    <h3 id="dbT">Backup and restore</h3>
+    <p class="hint">Your file lives only in this browser. If the browser data is cleared, it is gone. Save a backup file after each sitting and keep a copy somewhere safe (a USB stick or your own cloud storage).</p>
+    <div class="row" style="justify-content:flex-start">
+      <button class="btn pri" id="bExport">&#8681; Save backup file</button>
+      <button class="btn" id="bImport">&#8679; Restore from backup</button>
+      <input type="file" id="fImport" accept=".json,application/json" hidden>
+    </div>
+    <p class="hint" id="lastBk" style="margin-top:12px"></p>
+    <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+    <button class="rm" id="bWipe">Clear everything on this device</button>
+    <div class="row"><button class="btn" data-close>Close</button></div>
+  </div>
+</dialog>
+
+<dialog id="dPrint" aria-labelledby="dpT">
+  <div class="dlg">
+    <h3 id="dpT">Print your file</h3>
+    <p class="hint">Printed pages show what you have filled in, plus blank lines and rows so you can add more by hand.</p>
+    <div class="grid">
+      <div class="fld"><label for="pScope">What to print</label><select id="pScope"><option value="all">The whole file (binder)</option><option value="tonight">Tonight's Page only (fridge copy)</option><option value="blank">Blank file to fill in by hand</option></select></div>
+    </div>
+    <p class="hint" style="margin-top:10px">Tip: choose "Save as PDF" in the print window to keep a digital copy.</p>
+    <div class="row"><button class="btn" data-close>Cancel</button><button class="btn pri" id="bDoPrint">Print</button></div>
+  </div>
+</dialog>
+
+<dialog id="dConfirm" aria-labelledby="dcT">
+  <div class="dlg">
+    <h3 id="dcT">Please confirm</h3>
+    <p id="dcMsg"></p>
+    <div class="row"><button class="btn" id="dcNo">Cancel</button><button class="btn cor" id="dcYes">Yes, go ahead</button></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+var KEY="tst_grabgo_family_v1";
+var VERSION=1;
+
+/* ---------- Content schema ---------- */
+var REL=["Partner / spouse","Child","Parent","Sibling","Friend","Neighbour","Colleague","Other family","Other"];
+var S=[
+{id:"start",n:"",title:"Start Here",tab:"Start here",lead:"",custom:"start"},
+{id:"tonight",n:"",title:"Tonight's Page",tab:"One-page summary",lead:"Built automatically from what you fill in. Print it for the fridge, or the front of your binder. This is the page your family reads first.",custom:"tonight"},
+{id:"people",n:1,title:"Me and My People",tab:"Sitting 1",lead:"Who you are, and who should be called first. Your family will start at the top of this list.",groups:[
+ {g:"fields",title:"About me",fields:[
+  {k:"fullName",l:"Full legal name"},{k:"knownAs",l:"Name I go by"},
+  {k:"dob",l:"Date of birth",t:"date"},{k:"mobile",l:"My mobile number",t:"tel"},
+  {k:"address",l:"Home address",w:1,t:"textarea"},
+  {k:"idLoc",l:"Where my ID and passport are kept",w:1,sub:"The place, not the numbers."},
+  {k:"employer",l:"Where I work"},{k:"employerContact",l:"Work contact to call (name and number)"}
+ ]},
+ {g:"fields",title:"My partner",show:"partner",fields:[
+  {k:"pName",l:"Partner's full legal name"},{k:"pDob",l:"Partner's date of birth",t:"date"},
+  {k:"pMobile",l:"Partner's mobile",t:"tel"},{k:"pWork",l:"Partner's work contact"}
+ ]},
+ {g:"list",key:"callOrder",title:"Call these people, in this order",hint:"Put the calmest, most organised person first, not only the closest.",add:"Add a person",lab:"Person",fields:[
+  {k:"name",l:"Name"},{k:"rel",l:"Relationship",t:"select",o:REL},
+  {k:"phone",l:"Phone",t:"tel"},{k:"helps",l:"What they can help with",sub:"e.g. fetch the kids, speak to doctors, feed the dog"}
+ ]},
+ {g:"list",key:"pros",title:"People who already know my affairs",add:"Add a contact",lab:"Contact",fields:[
+  {k:"role",l:"Role",t:"select",o:["Family doctor","Lawyer / attorney","Accountant","Financial adviser","Insurance broker","Employer / HR","Faith or community leader","Other"]},
+  {k:"name",l:"Name and practice"},{k:"phone",l:"Phone or email"},{k:"notes",l:"What they handle for me"}
+ ]}
+]},
+{id:"health",n:2,title:"My Health Snapshot",tab:"Sitting 2",lead:"What a hospital and your family need to know if you cannot speak for yourself.",groups:[
+ {g:"fields",title:"The basics",fields:[
+  {k:"blood",l:"Blood type",t:"select",o:["Not sure","A+","A-","B+","B-","AB+","AB-","O+","O-"]},
+  {k:"donor",l:"Organ donor",t:"select",o:["Not decided","Yes, and registered","Yes, not registered yet","No"]},
+  {k:"allergies",l:"Allergies and reactions",w:1,t:"textarea",sub:"Medicines, foods, latex, insect stings. Write what happens."},
+  {k:"conditions",l:"Ongoing health conditions",w:1,t:"textarea"},
+  {k:"devices",l:"Implants or devices (pacemaker, insulin pump, etc.)",w:1}
+ ]},
+ {g:"fields",title:"Care and cover",fields:[
+  {k:"gp",l:"My doctor (name and practice)"},{k:"gpPhone",l:"Doctor's phone",t:"tel"},
+  {k:"insurer",l:"Medical aid / health insurer"},{k:"insurerNo",l:"Membership number, or where the card is"},
+  {k:"hospital",l:"Preferred hospital"},{k:"pharmacy",l:"Usual pharmacy"},
+  {k:"directive",l:"Living will / advance directive",w:1,sub:"Do I have one? Where is it kept? Who has a copy?"},
+  {k:"healthProxy",l:"Who can speak for my health decisions",w:1,sub:"Only if legally appointed. Rules differ by country, so check locally."}
+ ]},
+ {g:"list",key:"meds",title:"My medicines",hint:"Copy each one exactly from the pharmacy label. This is a record for your family and doctors, not dosing advice.",add:"Add a medicine",lab:"Medicine",fields:[
+  {k:"name",l:"Medicine name"},{k:"str",l:"Strength (as on label)",sub:"e.g. 5 mg, 500 mg"},
+  {k:"when",l:"When I take it (as prescribed)"},{k:"for",l:"What it is for"}
+ ]},
+ {g:"fields",title:"My partner's health",show:"partner",fields:[
+  {k:"pBlood",l:"Partner's blood type",t:"select",o:["Not sure","A+","A-","B+","B-","AB+","AB-","O+","O-"]},
+  {k:"pAllergies",l:"Partner's allergies"},{k:"pConditions",l:"Partner's conditions",w:1,t:"textarea"},
+  {k:"pMeds",l:"Partner's medicines (copied from labels)",w:1,t:"textarea"}
+ ]},
+ {g:"checks",key:"hbag",title:"Hospital grab bag",hint:"Things to pack (or for someone to bring). Tick when ready.",items:[
+  ["ID document and medical aid / insurance card"],["A printed copy of Tonight's Page"],["Medicines in their original boxes"],
+  ["Glasses, hearing aids, dentures and cases"],["Phone charger with a long cable"],["Key phone numbers written on paper","Phones die. Paper does not."],
+  ["Comfortable clothes, socks and toiletries"],["Something for children who visit (a book, a drawing pad)"]
+ ]}
+]},
+{id:"home",n:3,title:"Home, Kids and Pets",tab:"Sitting 3",lead:"How your household runs day to day, so whoever steps in can keep it going without guessing.",groups:[
+ {g:"list",key:"kids",title:"My children",hint:"The small details matter most: the comfort toy, the bedtime story, who is allowed to collect them.",add:"Add a child",lab:"Child",fields:[
+  {k:"name",l:"Name"},{k:"school",l:"School or daycare, and phone"},
+  {k:"pickup",l:"Times and who may collect them"},{k:"health",l:"Health needs or allergies"},
+  {k:"routine",l:"Routines, comfort items, things that calm them",w:1,t:"textarea"}
+ ]},
+ {g:"list",key:"pets",title:"My pets",add:"Add a pet",lab:"Pet",fields:[
+  {k:"name",l:"Name and type"},{k:"food",l:"Food, amounts and times"},
+  {k:"vet",l:"Vet name and phone"},{k:"carer",l:"Who could take them"}
+ ]},
+ {g:"fields",title:"Running the house",fields:[
+  {k:"keys",l:"Who has a spare key"},{k:"alarmLoc",l:"Where the alarm code is kept",sub:"The place, never the code."},
+  {k:"weekly",l:"Things that must happen every week",w:1,t:"textarea",sub:"Bins, school lunches, plants, medicine refills, pool."},
+  {k:"utilities",l:"Electricity, water, gas, internet: who to call and how they are paid",w:1,t:"textarea"},
+  {k:"car",l:"Car(s): make, model, where the keys and papers are",w:1},
+  {k:"helpers",l:"Domestic help, nanny, gardener, carers: names and days",w:1}
+ ]},
+ {g:"list",key:"where",title:"Where everything is kept",hint:"Your family should be able to find each of these in under five minutes.",add:"Add an item",lab:"Item",seed:["My will","ID documents and passports","Birth and marriage certificates","Property or lease documents","Insurance policies","Spare keys","Tax records","Vehicle papers"],fields:[
+  {k:"item",l:"What"},{k:"loc",l:"Exactly where",sub:"e.g. blue file, top drawer, study desk"}
+ ]}
+]},
+{id:"money",n:4,title:"My Money Map",tab:"Sitting 4",lead:"A map, not a vault. Your family needs to know what exists and who to call, not your passwords.",groups:[
+ {g:"note",kind:"safe",html:"<b>Never write here:</b> full account or card numbers, PINs, passwords or banking app codes. The last 4 digits are enough for your family to identify an account."},
+ {g:"list",key:"banks",title:"Accounts",add:"Add an account",lab:"Account",fields:[
+  {k:"inst",l:"Bank or provider"},{k:"type",l:"Type",t:"select",o:["Everyday / current","Savings","Credit card","Investment","Retirement / pension","Loan or bond","Online wallet","Other"]},
+  {k:"last4",l:"Last 4 digits only",mx:4},{k:"whose",l:"Whose",t:"select",o:["Mine","My partner's","Joint","Business"]},
+  {k:"contact",l:"Phone or branch to call",w:1}
+ ]},
+ {g:"list",key:"policies",title:"Insurance and cover",hint:"Include cover that comes with your job, your bank account or your credit card. These are the easiest to forget.",add:"Add a policy",lab:"Policy",fields:[
+  {k:"ins",l:"Insurer"},{k:"type",l:"Type",t:"select",o:["Life","Funeral","Disability / income protection","Dread / critical illness","Medical","Home and contents","Car","Travel","Other"]},
+  {k:"via",l:"Taken out through",t:"select",o:["Myself","My employer","My bank or card","Other"]},{k:"ben",l:"Who benefits"},
+  {k:"loc",l:"Policy number, or where the document is",w:1}
+ ]},
+ {g:"list",key:"bills",title:"Bills and automatic payments",hint:"Before anyone cancels a card or closes an account, they need this list. Otherwise payments bounce.",add:"Add a bill",lab:"Bill",fields:[
+  {k:"what",l:"What it is"},{k:"from",l:"Paid from (account last 4)"},
+  {k:"how",l:"How it is paid",t:"select",o:["Debit order","Card","Manual / online","Cash"]},{k:"day",l:"Day of the month"}
+ ]},
+ {g:"list",key:"income",title:"Money coming in",add:"Add income",lab:"Income",fields:[
+  {k:"src",l:"Source",sub:"Salary, pension, rental, online shop, benefits"},{k:"when",l:"When it arrives"},
+  {k:"into",l:"Into which account (last 4)"},{k:"notes",l:"Notes"}
+ ]},
+ {g:"list",key:"debts",title:"Money I owe",add:"Add a debt",lab:"Debt",fields:[
+  {k:"who",l:"Lender"},{k:"type",l:"Type",t:"select",o:["Home loan / bond","Car finance","Personal loan","Store account","Credit card","Owed to a person","Other"]},
+  {k:"notes",l:"Notes (insured? who to call?)",w:1}
+ ]}
+]},
+{id:"found",n:5,title:"Lost and Found Money",tab:"Sitting 5",lead:"Twelve places money quietly sits and gets forgotten. Tick each one you have checked, and note what you found.",groups:[
+ {g:"note",kind:"tip",html:"<b>How to search safely:</b> many countries run an official, free search for unclaimed money or dormant accounts. Search for \"[your country] unclaimed money official\" and use only government or financial regulator websites. Never pay a finder's fee before checking the free official route."},
+ {g:"checknotes",key:"found",items:[
+  ["Old employer pension or retirement funds","Every job you have had may have left one behind."],
+  ["Group life cover from current or past jobs","Often only HR knows it exists."],
+  ["Dormant or forgotten bank accounts","Childhood savings, old student accounts, accounts abroad."],
+  ["Policies linked to a bank account or credit card","Some cards include free life or travel cover."],
+  ["Medical aid or health insurance refunds and savings balances"],
+  ["Tax refunds owed to me"],
+  ["Rental, utility and phone deposits","Paid years ago, often never reclaimed."],
+  ["Shares, unit trusts or employee share schemes"],
+  ["Online wallets and payment apps","PayPal, Wise, Stripe, marketplace and shop balances."],
+  ["Loyalty points, airline miles, gift cards and store credit"],
+  ["Money other people owe me","Personal loans to family or friends."],
+  ["Cash, gold or a safe deposit box","Where it is and who has access."]
+ ]}
+]},
+{id:"digital",n:6,title:"My Digital Life",tab:"Sitting 6",lead:"Your family should be able to reach your photos, close your accounts and keep your business running, without you ever writing a password here.",groups:[
+ {g:"note",kind:"safe",html:"<b>Record the where, never the what:</b> where your passwords are kept and who knows how to reach them. Not the passwords, PINs, recovery codes or crypto recovery phrases themselves."},
+ {g:"fields",title:"Getting in",fields:[
+  {k:"pwWhere",l:"Where my passwords are kept",w:1,sub:"e.g. a password manager (name it), or a sealed envelope in a named place"},
+  {k:"pwWho",l:"Who can reach them, and how",w:1},
+  {k:"phoneAccess",l:"How my phone can be unlocked",sub:"Who knows, or where the note is kept"},
+  {k:"twofa",l:"Where my 2-step login backup codes are kept"},
+  {k:"emailMain",l:"My main email address",t:"email"},{k:"cryptoLoc",l:"Crypto or hardware wallet: where the details are stored",sub:"Location only"}
+ ]},
+ {g:"list",key:"accounts",title:"Accounts that matter",hint:"Start with email (it resets everything else), then photos, banking apps, social media and any online shop.",add:"Add an account",lab:"Account",fields:[
+  {k:"svc",l:"Service",sub:"e.g. Gmail, iCloud, Facebook, Gumroad"},{k:"type",l:"Type",t:"select",o:["Email","Photos / cloud","Social media","Banking or payment app","Shopping","Subscription","Online business","Work","AI tool","Other"]},
+  {k:"user",l:"Login email or username"},{k:"wish",l:"What I want done",t:"select",o:["Keep running","Download, then close","Memorialise","Close","Hand over to someone"]},
+  {k:"notes",l:"Notes",w:1}
+ ]},
+ {g:"checks",key:"legacy",title:"Legacy settings",hint:"Several big providers let you name someone in advance. Features change, so check each provider's official help pages.",items:[
+  ["Apple: Legacy Contact chosen","On iPhone: Settings, your name, Sign-In and Security, Legacy Contact (wording can vary by iOS version)."],
+  ["Google: Inactive Account Manager set up","Found in your Google Account under Data and privacy."],
+  ["Facebook: legacy contact chosen","In Settings, under memorialisation."],
+  ["Family photos backed up somewhere my family can reach"],
+  ["My most important photos labelled with names and years"]
+ ]}
+]},
+{id:"plan",n:7,title:"If Something Happens to Me",tab:"Sitting 7",lead:"Plain step-by-step lists your family can follow, one step at a time. Most emergencies are a hospital stay, not the worst, so that comes first.",groups:[
+ {g:"checks",key:"h24",title:"If I am in hospital: the first 24 hours",hint:"For my family to tick off.",items:[
+  ["Call the people on my call list, in order"],["Take Tonight's Page, my medicines list and medical aid card to the hospital"],
+  ["Arrange care for the children and pets (see Home, Kids and Pets)"],["Tell my work contact"],
+  ["Keep a notebook: what doctors say, names, times, questions"],["Check the house is locked and the stove and taps are off"]
+ ]},
+ {g:"checks",key:"h7",title:"If I am in hospital: the first 7 days",items:[
+  ["Notify my medical aid / health insurer","Many need to be told early. Ask what they require."],
+  ["Check bills due this week against my bills list"],["Ask my employer about sick leave and any income cover"],
+  ["Check whether anyone holds legal authority to act for me","For example, a power of attorney. Rules differ by country. If no one does, ask a local lawyer or legal aid service."],
+  ["Collect the post and keep it in one place"],["Share updates through one person, so I am not flooded with calls"]
+ ]},
+ {g:"checks",key:"worst",title:"If I do not recover: gentle first steps",hint:"You do not need to do this all at once. Most things can wait a few days.",items:[
+  ["Call the first person on my call list"],["Find my will and wishes (see Where everything is kept)"],
+  ["Contact the people who know my affairs (lawyer, accountant)"],
+  ["Ask the funeral provider what they can notify for you","Some help with official notifications. This differs by country."],
+  ["Before cancelling any card, check the bills and automatic payments on it"],
+  ["Tell banks and insurers. Ask each one exactly which documents they need"],
+  ["Work through Lost and Found Money"]
+ ]},
+ {g:"fields",title:"My wishes, in my words",fields:[
+  {k:"wishes",l:"What matters most to me",w:1,t:"textarea",sub:"About care, about the children, about how I want to be remembered."},
+  {k:"funeral",l:"Funeral or memorial wishes",w:1,t:"textarea"},
+  {k:"willLoc",l:"Where my will is, and who drew it up",w:1},
+  {k:"letters",l:"Where my letters to family are kept",w:1}
+ ]}
+]},
+{id:"current",n:"",title:"Keeping It Current",tab:"Once a year",lead:"A file that is two years old can send your family to the wrong number. Ten minutes a year keeps it true.",groups:[
+ {g:"fields",title:"Review dates",fields:[
+  {k:"lastReview",l:"Last reviewed",t:"date"},{k:"nextReview",l:"Next review",t:"date",sub:"Tip: pick a date you never forget, like a birthday."},
+  {k:"copies",l:"Who has a printed copy, or knows where this file is",w:1}
+ ]},
+ {g:"checks",key:"yearly",title:"Yearly check",items:[
+  ["Phone numbers still correct"],["Medicines list matches the current labels"],["Who benefits on each policy is still right"],
+  ["Closed accounts removed, new ones added"],["Children's schools and routines updated"],
+  ["New backup file saved"],["Fresh copy printed and the old one destroyed safely"]
+ ]},
+ {g:"note",kind:"sun",html:"<b>The 10-minute family talk:</b> choose one person. Show them where this file is kept. Read Tonight's Page together. Ask: \"If you had to use this tomorrow, what would you still not know?\" Write their answer in, then you are done."}
+]}
+];
+
+/* ---------- State ---------- */
+var st={v:VERSION,settings:{name:"",forWhom:"me",paper:"A4",text:"16",theme:"light"},f:{},l:{},c:{},cn:{},meta:{}};
+function load(){
+  try{var raw=localStorage.getItem(KEY);if(raw){var d=JSON.parse(raw);merge(d);}}catch(e){}
+  seedLists();
+}
+function merge(d){
+  if(!d||typeof d!=="object")return;
+  ["f","l","c","cn","meta"].forEach(function(k){if(d[k]&&typeof d[k]==="object")st[k]=d[k];});
+  if(d.settings)for(var s in d.settings)st.settings[s]=d.settings[s];
+}
+function seedLists(){
+  S.forEach(function(sec){(sec.groups||[]).forEach(function(g){
+    if(g.g==="list"&&g.seed&&!st.l[g.key]){st.l[g.key]=g.seed.map(function(x){return {item:x,loc:""};});}
+  });});
+}
+var tSave;
+function save(){
+  clearTimeout(tSave);
+  tSave=setTimeout(function(){
+    try{localStorage.setItem(KEY,JSON.stringify(st));flash("Saved");}catch(e){flash("Not saved - storage blocked");}
+  },350);
+  updateProgress();
+}
+function flash(t){var el=$("saved");el.textContent=t;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},1800);}
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function toast(t){var el=$("toast");el.textContent=t;el.classList.add("show");clearTimeout(el._t);el._t=setTimeout(function(){el.classList.remove("show");},2400);}
+function ask(msg,yes){
+  var d=$("dConfirm");$("dcMsg").textContent=msg;
+  $("dcYes").onclick=function(){d.close();yes();};
+  $("dcNo").onclick=function(){d.close();};
+  if(d.showModal)d.showModal();else d.setAttribute("open","");
+}
+function shown(g){return !g.show||st.settings.forWhom===g.show;}
+
+/* ---------- Progress ---------- */
+function secProgress(sec){
+  var tot=0,done=0;
+  (sec.groups||[]).forEach(function(g){
+    if(!shown(g))return;
+    if(g.g==="fields")g.fields.forEach(function(f){tot++;if(String(st.f[f.k]||"").trim())done++;});
+    if(g.g==="list"){tot++;var a=st.l[g.key]||[];if(a.some(function(r){return Object.keys(r).some(function(k){return k!=="item"&&String(r[k]||"").trim();});}))done++;}
+    if(g.g==="checks")g.items.forEach(function(it,i){tot++;if(st.c[g.key+"_"+i])done++;});
+    if(g.g==="checknotes")g.items.forEach(function(it,i){tot++;if(st.cn[g.key+"_"+i]&&st.cn[g.key+"_"+i].on)done++;});
+  });
+  return tot?Math.round(done/tot*100):null;
+}
+function updateProgress(){
+  var sum=0,cnt=0;
+  S.forEach(function(sec){
+    var p=secProgress(sec);var el=document.querySelector('[data-pct="'+sec.id+'"]');
+    if(p!==null){sum+=p;cnt++;if(el){el.textContent=p+"%";el.parentNode.parentNode.classList.toggle("done",p===100);}}
+  });
+  var all=cnt?Math.round(sum/cnt):0;
+  $("pAll").textContent=all+"%";$("pBar").style.width=all+"%";$("pBarM").style.width=all+"%";
+}
+
+/* ---------- Navigation ---------- */
+var cur="start";
+function buildNav(){
+  var h="",o="";
+  S.forEach(function(sec){
+    var num=sec.n?sec.n:(sec.id==="start"?"&#9654;":sec.id==="tonight"?"&#9733;":"&#8635;");
+    var p=secProgress(sec);
+    h+='<li><button data-go="'+sec.id+'"'+(sec.id===cur?' aria-current="page"':'')+'><span class="num" aria-hidden="true">'+num+'</span><span>'+esc(sec.title)+'</span>'+(p!==null?'<span class="pct" data-pct="'+sec.id+'">'+p+'%</span>':'')+'</button></li>';
+    o+='<option value="'+sec.id+'"'+(sec.id===cur?' selected':'')+'>'+(sec.n?sec.n+". ":"")+esc(sec.title)+'</option>';
+  });
+  $("nav").innerHTML=h;$("mobSel").innerHTML=o;updateProgress();
+}
+function go(id){
+  cur=id;st.meta.last=id;save();buildNav();render();
+  window.scrollTo({top:0,behavior:"smooth"});
+  var h=document.querySelector("#view h2");if(h){h.setAttribute("tabindex","-1");h.focus({preventScroll:true});}
+}
+
+/* ---------- Rendering ---------- */
+function fieldHTML(f,val,id,dataAttr){
+  var t=f.t||"text",inp;
+  var a=' id="'+id+'" '+dataAttr+(f.mx?' inputmode="numeric"':'');
+  if(t==="textarea")inp='<textarea'+a+'>'+esc(val)+'</textarea>';
+  else if(t==="select"){inp='<select'+a+'><option value="">Choose...</option>'+f.o.map(function(x){return '<option'+(x===val?' selected':'')+'>'+esc(x)+'</option>';}).join("")+'</select>';}
+  else inp='<input type="'+t+'"'+a+' value="'+esc(val)+'">';
+  return '<div class="fld'+(f.w||t==="textarea"?' wide':'')+'"><label for="'+id+'">'+esc(f.l)+'</label>'+inp+(f.sub?'<span class="sub">'+esc(f.sub)+'</span>':'')+'</div>';
+}
+function groupHTML(g){
+  if(!shown(g))return "";
+  var h='<section class="grp">'+(g.title?'<h3>'+esc(g.title)+'</h3>':'')+(g.hint?'<p class="hint">'+esc(g.hint)+'</p>':'');
+  if(g.g==="note")return '<div class="note '+g.kind+'">'+g.html+'</div>';
+  if(g.g==="fields"){h+='<div class="grid">'+g.fields.map(function(f){return fieldHTML(f,st.f[f.k]||"","f_"+f.k,'data-f="'+f.k+'"');}).join("")+'</div>';}
+  if(g.g==="list"){
+    var arr=st.l[g.key]||[];
+    h+='<div class="items">';
+    if(!arr.length)h+='<p class="empty">Nothing added yet.</p>';
+    arr.forEach(function(r,i){
+      h+='<div class="item"><div class="ihead"><span>'+esc(g.lab)+' '+(i+1)+'</span><button class="rm" data-rm="'+g.key+'" data-i="'+i+'" aria-label="Remove '+esc(g.lab)+' '+(i+1)+'">Remove</button></div><div class="grid">'+
+      g.fields.map(function(f){return fieldHTML(f,r[f.k]||"","l_"+g.key+"_"+i+"_"+f.k,'data-l="'+g.key+'" data-i="'+i+'" data-k="'+f.k+'"');}).join("")+'</div></div>';
+    });
+    h+='</div><button class="btn add" data-add="'+g.key+'">+ '+esc(g.add)+'</button>';
+  }
+  if(g.g==="checks"){
+    h+='<div class="checks">'+g.items.map(function(it,i){var k=g.key+"_"+i,on=!!st.c[k];
+      return '<label class="chk'+(on?' on':'')+'"><input type="checkbox" data-c="'+k+'"'+(on?' checked':'')+'><span><span class="t">'+esc(it[0])+'</span>'+(it[1]?'<span class="d">'+esc(it[1])+'</span>':'')+'</span></label>';}).join("")+'</div>';
+  }
+  if(g.g==="checknotes"){
+    h+='<div class="checks">'+g.items.map(function(it,i){var k=g.key+"_"+i,o=st.cn[k]||{};
+      return '<div class="cn'+(o.on?' on':'')+'"><label class="chk"><input type="checkbox" data-cn="'+k+'"'+(o.on?' checked':'')+'><span><span class="t">'+(i+1)+'. '+esc(it[0])+'</span>'+(it[1]?'<span class="d">'+esc(it[1])+'</span>':'')+'</span></label><input type="text" data-cnt="'+k+'" aria-label="What I found for: '+esc(it[0])+'" placeholder="What I found, or where to look" value="'+esc(o.t||"")+'"></div>';}).join("")+'</div>';
+  }
+  return h+'</section>';
+}
+function pager(){
+  var i=S.findIndex(function(s){return s.id===cur;}),h='<div class="pager">';
+  h+=i>0?'<button class="btn" data-go="'+S[i-1].id+'">&#8592; '+esc(S[i-1].title)+'</button>':'<span></span>';
+  h+=i<S.length-1?'<button class="btn pri" data-go="'+S[i+1].id+'">'+esc(S[i+1].title)+' &#8594;</button>':'';
+  return h+'</div>';
+}
+function render(){
+  var sec=S.find(function(s){return s.id===cur;})||S[0];
+  var body=sec.custom==="start"?startHTML():sec.custom==="tonight"?tonightHTML():(sec.groups.map(groupHTML).join(""));
+  $("view").innerHTML='<div class="folder"><span class="tab">'+esc(sec.tab)+'</span><div class="sheet"><h2>'+esc(sec.title)+'</h2>'+(sec.lead?'<p class="lead">'+esc(sec.lead)+'</p>':'')+body+pager()+'</div></div>';
+}
+function startHTML(){
+  var nm=st.settings.name?esc(st.settings.name):"Your family file";
+  return '<p class="lead" style="font-size:1.05rem">If you were in hospital tonight, would your family know who to call, which medicines you take, who fetches the children, and which bills go off on Friday? <b>'+nm+'</b> answers those questions on a few pages.</p>'+
+  '<div class="cards">'+
+  '<div class="card"><h4><span class="dot"></span>How it works</h4><ol class="steps"><li>Do one sitting at a time. Seven short sittings, in any order.</li><li>Fill in what you know. Blanks are fine, they show you what to find later.</li><li>Print your binder, and print Tonight\'s Page for the fridge.</li><li>Show one person where it is kept.</li></ol></div>'+
+  '<div class="card"><h4><span class="dot" style="background:var(--sage)"></span>Your privacy</h4><p>Everything you type stays in this browser, on this device. Nothing is sent anywhere. Because of that, <b>save a backup file</b> after each sitting.</p><p style="margin-top:10px"><button class="btn sm pri" data-open="dBackup">Backup now</button></p></div>'+
+  '<div class="card"><h4><span class="dot" style="background:var(--sun)"></span>Never write here</h4><ul><li>Passwords or PINs</li><li>Full bank or card numbers</li><li>Recovery codes or crypto phrases</li><li>ID or passport numbers</li></ul><p style="margin-top:8px">Write <i>where</i> they are kept instead.</p></div>'+
+  '<div class="card"><h4><span class="dot" style="background:var(--coral)"></span>Make it yours</h4><p>Name your file, add your partner, choose A4 or US Letter, and set a larger text size.</p><p style="margin-top:10px"><button class="btn sm" data-open="dSettings">Personalise</button></p></div>'+
+  '</div><div class="note tip" style="margin-top:18px"><b>Start small:</b> fill in your call list in Sitting 1 tonight. That one list does more good than any other page.</div>'+
+  '<p class="hint" style="margin-top:16px">This is an organiser. It is not a will, and it does not give legal, medical or financial advice. A will, power of attorney or advance directive must follow the laws of your country, so speak to a qualified professional for those.</p>';
+}
+function v(k){var x=String(st.f[k]||"").trim();return x?esc(x):'<span class="miss">not filled in yet</span>';}
+function fmtDate(d){if(!d)return "";try{var p=d.split("-");return p[2]+"/"+p[1]+"/"+p[0]+" (dd/mm/yyyy)";}catch(e){return d;}}
+function tonightData(){
+  var calls=(st.l.callOrder||[]).filter(function(r){return r.name||r.phone;}).slice(0,4);
+  var meds=(st.l.meds||[]).filter(function(r){return r.name;});
+  var kids=(st.l.kids||[]).filter(function(r){return r.name;});
+  var pets=(st.l.pets||[]).filter(function(r){return r.name;});
+  var where=(st.l.where||[]).filter(function(r){return r.item&&r.loc;});
+  return {calls:calls,meds:meds,kids:kids,pets:pets,where:where};
+}
+function tonightHTML(){
+  var d=tonightData();
+  var h='<div class="cards">';
+  h+='<div class="card"><h4><span class="dot"></span>Who I am</h4><dl class="kv"><dt>Name</dt><dd>'+v("fullName")+'</dd><dt>Born</dt><dd>'+(st.f.dob?esc(fmtDate(st.f.dob)):'<span class="miss">not filled in yet</span>')+'</dd><dt>Mobile</dt><dd>'+v("mobile")+'</dd><dt>ID kept</dt><dd>'+v("idLoc")+'</dd></dl></div>';
+  h+='<div class="card"><h4><span class="dot"></span>Call first, in this order</h4>'+(d.calls.length?'<ol style="margin:0;padding-left:18px">'+d.calls.map(function(r){return '<li><b>'+esc(r.name)+'</b>'+(r.rel?' ('+esc(r.rel)+')':'')+' '+esc(r.phone||"")+'</li>';}).join("")+'</ol>':'<p class="miss">Add your call list in Sitting 1.</p>')+'</div>';
+  h+='<div class="card"><h4><span class="dot" style="background:var(--sage)"></span>Health</h4><dl class="kv"><dt>Blood type</dt><dd>'+v("blood")+'</dd><dt>Allergies</dt><dd>'+v("allergies")+'</dd><dt>Conditions</dt><dd>'+v("conditions")+'</dd><dt>Doctor</dt><dd>'+v("gp")+' '+esc(st.f.gpPhone||"")+'</dd><dt>Cover</dt><dd>'+v("insurer")+'</dd></dl></div>';
+  h+='<div class="card"><h4><span class="dot" style="background:var(--sage)"></span>Medicines</h4>'+(d.meds.length?'<ul>'+d.meds.map(function(r){return '<li><b>'+esc(r.name)+'</b> '+esc(r.str||"")+(r.when?' - '+esc(r.when):'')+'</li>';}).join("")+'</ul>':'<p class="miss">None listed yet (Sitting 2).</p>')+'</div>';
+  h+='<div class="card"><h4><span class="dot" style="background:var(--sun)"></span>Children and pets</h4>'+((d.kids.length||d.pets.length)?'<ul>'+d.kids.map(function(r){return '<li><b>'+esc(r.name)+'</b>: '+esc(r.school||"")+(r.pickup?' - '+esc(r.pickup):'')+'</li>';}).join("")+d.pets.map(function(r){return '<li><b>'+esc(r.name)+'</b>: '+esc(r.food||"")+(r.carer?' - goes to '+esc(r.carer):'')+'</li>';}).join("")+'</ul>':'<p class="miss">Add them in Sitting 3.</p>')+'</div>';
+  h+='<div class="card"><h4><span class="dot" style="background:var(--sun)"></span>Where things are</h4>'+(d.where.length?'<ul>'+d.where.slice(0,8).map(function(r){return '<li><b>'+esc(r.item)+'</b>: '+esc(r.loc)+'</li>';}).join("")+'</ul>':'<p class="miss">Fill in locations in Sitting 3.</p>')+'<p style="margin-top:8px"><b>Passwords:</b> '+v("pwWhere")+'</p></div>';
+  h+='</div><div class="note sun" style="margin-top:16px"><b>Next:</b> turn to "If Something Happens to Me" for the step-by-step lists.</div>';
+  h+='<p style="margin-top:14px"><button class="btn cor" id="bPrintTonight">&#9113; Print this page for the fridge</button></p>';
+  return h;
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("click",function(e){
+  var t=e.target.closest("button,[data-open]");if(!t)return;
+  if(t.dataset.go){go(t.dataset.go);return;}
+  if(t.dataset.open){openDlg(t.dataset.open);return;}
+  if(t.dataset.add){var k=t.dataset.add;(st.l[k]=st.l[k]||[]).push({});save();render();
+    var items=document.querySelectorAll('[data-l="'+k+'"]');if(items.length){var last=document.querySelectorAll('.items')[0];}
+    var f=document.querySelector('[data-l="'+k+'"][data-i="'+(st.l[k].length-1)+'"]');if(f)f.focus();return;}
+  if(t.dataset.rm){var arr=st.l[t.dataset.rm];var i=+t.dataset.i;var r=arr[i]||{};
+    var has=Object.keys(r).some(function(x){return String(r[x]||"").trim();});
+    var doRm=function(){arr.splice(i,1);save();render();updateProgress();};
+    if(has)ask("Remove this entry? This cannot be undone.",doRm);else doRm();
+    return;}
+  if(t.hasAttribute("data-close")){t.closest("dialog").close();return;}
+  if(t.id==="bPrintTonight"){doPrint("tonight");}
+});
+document.addEventListener("input",function(e){
+  var t=e.target;
+  if(t.dataset.f){st.f[t.dataset.f]=t.value;save();return;}
+  if(t.dataset.l){var a=st.l[t.dataset.l]=st.l[t.dataset.l]||[];var i=+t.dataset.i;a[i]=a[i]||{};
+    var val=t.value;if(t.dataset.k==="last4"){val=val.replace(/\D/g,"").slice(0,4);t.value=val;}
+    a[i][t.dataset.k]=val;save();return;}
+  if(t.dataset.cnt){var o=st.cn[t.dataset.cnt]=st.cn[t.dataset.cnt]||{};o.t=t.value;save();}
+});
+document.addEventListener("change",function(e){
+  var t=e.target;
+  if(t.dataset.c){st.c[t.dataset.c]=t.checked;t.closest(".chk").classList.toggle("on",t.checked);save();return;}
+  if(t.dataset.cn){var o=st.cn[t.dataset.cn]=st.cn[t.dataset.cn]||{};o.on=t.checked;t.closest(".cn").classList.toggle("on",t.checked);save();return;}
+  if(t.tagName==="SELECT"&&(t.dataset.f||t.dataset.l)){t.dispatchEvent(new Event("input",{bubbles:true}));}
+  if(t.dataset.f==="lastReview"&&t.value&&!st.f.nextReview){
+    var d=new Date(t.value);d.setFullYear(d.getFullYear()+1);st.f.nextReview=d.toISOString().slice(0,10);save();render();}
+});
+$("mobSel").addEventListener("change",function(){go(this.value);});
+$("bTonight").onclick=function(){go("tonight");};
+$("bPrint").onclick=function(){openDlg("dPrint");};
+$("bBackup").onclick=function(){openDlg("dBackup");};
+$("bSettings").onclick=function(){openDlg("dSettings");};
+$("bDoPrint").onclick=function(){$("dPrint").close();doPrint($("pScope").value);};
+
+function openDlg(id){
+  var d=$(id);
+  if(id==="dSettings"){$("sName").value=st.settings.name;$("sFor").value=st.settings.forWhom;$("sPaper").value=st.settings.paper;$("sText").value=st.settings.text;$("sTheme").value=st.settings.theme;}
+  if(id==="dBackup"){$("lastBk").textContent=st.meta.lastBackup?"Last backup saved: "+new Date(st.meta.lastBackup).toLocaleString():"No backup saved yet.";}
+  if(d.showModal)d.showModal();else d.setAttribute("open","");
+}
+["sName","sFor","sPaper","sText","sTheme"].forEach(function(id){
+  $(id).addEventListener(id==="sName"?"input":"change",function(){
+    var map={sName:"name",sFor:"forWhom",sPaper:"paper",sText:"text",sTheme:"theme"};
+    st.settings[map[id]]=this.value;applySettings();save();if(id==="sFor"||id==="sName"){buildNav();render();}
+  });
+});
+function applySettings(){
+  document.documentElement.setAttribute("data-theme",st.settings.theme==="dark"?"dark":"light");
+  document.documentElement.style.setProperty("--fs",(st.settings.text||"16")+"px");
+  $("pageSize").textContent="@page{size:"+(st.settings.paper==="letter"?"letter":"A4")+";margin:15mm}";
+  document.title=(st.settings.name?st.settings.name+" | ":"")+"Grab-and-Go Family File";
+}
+
+/* Backup */
+$("bExport").onclick=function(){
+  try{
+    st.meta.lastBackup=Date.now();
+    var blob=new Blob([JSON.stringify({app:"grab-and-go-family-file",saved:new Date().toISOString(),data:st},null,2)],{type:"application/json"});
+    var a=document.createElement("a");a.href=URL.createObjectURL(blob);
+    a.download="family-file-backup-"+new Date().toISOString().slice(0,10)+".json";
+    document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+    save();$("lastBk").textContent="Last backup saved: "+new Date().toLocaleString();toast("Backup file saved");
+  }catch(e){toast("Could not create the backup file");}
+};
+$("bImport").onclick=function(){$("fImport").click();};
+$("fImport").onchange=function(){
+  var f=this.files[0];if(!f)return;var rd=new FileReader();
+  rd.onload=function(){
+    try{var j=JSON.parse(rd.result);var d=j&&j.data?j.data:j;
+      if(!d||typeof d!=="object"||!(d.f||d.l))throw 0;
+      $("dBackup").close();
+      ask("Replace what is on this device with the backup from "+(j.saved?new Date(j.saved).toLocaleDateString():"this file")+"?",function(){
+      st={v:VERSION,settings:{name:"",forWhom:"me",paper:"A4",text:"16",theme:"light"},f:{},l:{},c:{},cn:{},meta:{}};merge(d);seedLists();
+      applySettings();save();buildNav();render();toast("Backup restored");
+      });
+    }catch(e){toast("That file is not a Family File backup");}
+  };rd.readAsText(f);this.value="";
+};
+$("bWipe").onclick=function(){
+  $("dBackup").close();
+  ask("Clear everything in this file on this device? This cannot be undone. Save a backup first if you may need it.",function(){
+  try{localStorage.removeItem(KEY);}catch(e){}
+  st={v:VERSION,settings:{name:"",forWhom:"me",paper:"A4",text:"16",theme:"light"},f:{},l:{},c:{},cn:{},meta:{}};seedLists();
+  applySettings();buildNav();cur="start";render();toast("Cleared");
+  });
+};
+
+/* ---------- Print binder ---------- */
+function doPrint(scope){
+  $("printArea").innerHTML=buildPrint(scope);
+  setTimeout(function(){window.print();},60);
+}
+function pv(x,blank){return blank?"":esc(x||"");}
+function buildPrint(scope){
+  var blank=scope==="blank",out="";
+  var nm=blank?"":esc(st.settings.name||"");
+  var foot='<div class="pfoot">Grab-and-Go Family File - The Snag Tag. An organiser, not legal, medical or financial advice. Never write passwords, PINs or full account numbers on these pages. Printed '+new Date().toLocaleDateString()+'.</div>';
+  if(scope==="tonight")return tonightPrint()+"";
+  out+='<div class="pp pcover"><div class="tabmark"></div><h1>Grab-and-Go Family File</h1><p>Who to call. What to know. Where it is kept.</p><p style="color:#777;font-size:10pt">Read "Tonight\'s Page" first.</p><div class="who">'+(nm||"&nbsp;")+'</div><p style="margin-top:3mm;font-size:9pt;color:#777">Last reviewed: '+(blank?"______________":esc(fmtDate(st.f.lastReview))||"______________")+'</p>'+foot+'</div>';
+  if(!blank)out+=tonightPrint();
+  S.forEach(function(sec){
+    if(sec.custom)return;
+    var h='<div class="pp"><span class="ptab">'+esc(sec.tab)+'</span><h2 class="ph2">'+esc(sec.title)+'</h2><p class="plead">'+esc(sec.lead)+'</p>';
+    sec.groups.forEach(function(g){
+      if(!shown(g)&&!(blank&&g.show==="partner"))return;
+      if(g.g==="note"){h+='<div class="pnote">'+g.html+'</div>';return;}
+      if(g.title)h+='<h3 class="ph3">'+esc(g.title)+'</h3>';
+      if(g.g==="fields"){h+='<table class="pkv">'+g.fields.map(function(f){return '<tr><td>'+esc(f.l)+'</td><td>'+pv(f.k==="dob"||f.t==="date"?fmtDate(st.f[f.k]):st.f[f.k],blank)+'</td></tr>';}).join("")+'</table>';}
+      if(g.g==="list"){
+        var rows=blank?(g.seed?g.seed.map(function(s){return {item:s};}):[]):(st.l[g.key]||[]).filter(function(r){return Object.keys(r).some(function(k){return String(r[k]||"").trim();});});
+        var extra=blank?Math.max(4,8-rows.length):2;
+        var pf=g.fields.slice(0,5);
+        h+='<table class="ptbl"><thead><tr>'+pf.map(function(f){return '<th>'+esc(f.l)+'</th>';}).join("")+'</tr></thead><tbody>'+
+          rows.map(function(r){return '<tr>'+pf.map(function(f){return '<td>'+esc(r[f.k]||"")+'</td>';}).join("")+'</tr>';}).join("")+
+          new Array(extra+1).join('<tr>'+pf.map(function(){return '<td></td>';}).join("")+'</tr>')+'</tbody></table>';
+      }
+      if(g.g==="checks"){h+='<ul class="pchk">'+g.items.map(function(it,i){var on=!blank&&st.c[g.key+"_"+i];return '<li><span class="bx">'+(on?"&#10003;":"")+'</span>'+esc(it[0])+(it[1]?'<small>'+esc(it[1])+'</small>':'')+'</li>';}).join("")+'</ul>';}
+      if(g.g==="checknotes"){h+='<ul class="pchk">'+g.items.map(function(it,i){var o=st.cn[g.key+"_"+i]||{};return '<li><span class="bx">'+(!blank&&o.on?"&#10003;":"")+'</span>'+(i+1)+'. '+esc(it[0])+'<small>Found / notes: '+(blank||!o.t?"______________________________________________":esc(o.t))+'</small></li>';}).join("")+'</ul>';}
+    });
+    out+=h+foot+'</div>';
+  });
+  return out;
+}
+function tonightPrint(){
+  var d=tonightData();
+  function pvv(k){return esc(st.f[k]||"")||"______________";}
+  var h='<div class="pp"><span class="ptab">Read this first</span><h2 class="ph2">Tonight\'s Page'+(st.settings.name?' - '+esc(st.settings.name):'')+'</h2><p class="plead">If I cannot speak for myself, start here. The full file is behind this page.</p><div class="pgrid">';
+  h+='<div class="pbox"><h4>Who I am</h4><p>'+pvv("fullName")+'</p><p>Born: '+(esc(fmtDate(st.f.dob))||"______________")+'</p><p>Mobile: '+pvv("mobile")+'</p><p>ID kept: '+pvv("idLoc")+'</p></div>';
+  h+='<div class="pbox"><h4>Call first, in this order</h4><ol style="margin:0;padding-left:5mm">'+(d.calls.length?d.calls.map(function(r){return '<li>'+esc(r.name)+(r.rel?' ('+esc(r.rel)+')':'')+' '+esc(r.phone||"")+'</li>';}).join(""):'<li>______________</li><li>______________</li><li>______________</li>')+'</ol></div>';
+  h+='<div class="pbox"><h4>Health</h4><p>Blood type: '+pvv("blood")+'</p><p>Allergies: '+pvv("allergies")+'</p><p>Conditions: '+pvv("conditions")+'</p><p>Doctor: '+pvv("gp")+' '+esc(st.f.gpPhone||"")+'</p><p>Cover: '+pvv("insurer")+' '+esc(st.f.insurerNo||"")+'</p></div>';
+  h+='<div class="pbox"><h4>Medicines (as on labels)</h4><ul style="margin:0;padding-left:5mm">'+(d.meds.length?d.meds.map(function(r){return '<li>'+esc(r.name)+' '+esc(r.str||"")+(r.when?' - '+esc(r.when):'')+'</li>';}).join(""):'<li>______________</li><li>______________</li>')+'</ul></div>';
+  h+='<div class="pbox"><h4>Children and pets</h4><ul style="margin:0;padding-left:5mm">'+((d.kids.length||d.pets.length)?d.kids.map(function(r){return '<li>'+esc(r.name)+': '+esc(r.school||"")+(r.pickup?' - '+esc(r.pickup):'')+'</li>';}).join("")+d.pets.map(function(r){return '<li>'+esc(r.name)+': '+esc(r.food||"")+(r.carer?' - goes to '+esc(r.carer):'')+'</li>';}).join(""):'<li>______________</li>')+'</ul></div>';
+  h+='<div class="pbox"><h4>Where things are</h4><ul style="margin:0;padding-left:5mm">'+(d.where.length?d.where.slice(0,8).map(function(r){return '<li>'+esc(r.item)+': '+esc(r.loc)+'</li>';}).join(""):'<li>______________</li>')+'<li>Passwords: '+pvv("pwWhere")+'</li></ul></div>';
+  h+='</div><div class="pnote" style="margin-top:4mm"><b>Next:</b> see "If Something Happens to Me" for the step-by-step lists.</div><div class="pfoot">Grab-and-Go Family File - The Snag Tag. An organiser, not medical advice. Printed '+new Date().toLocaleDateString()+'.</div></div>';
+  return h;
+}
+
+/* ---------- Init ---------- */
+load();applySettings();
+cur=(st.meta.last&&S.some(function(s){return s.id===st.meta.last;}))?st.meta.last:"start";
+buildNav();render();
+window.addEventListener("beforeprint",function(){if(!$("printArea").innerHTML)$("printArea").innerHTML=buildPrint("all");});
+window.addEventListener("afterprint",function(){$("printArea").innerHTML="";});
+})();
+</script>
+</body>
+</html>
