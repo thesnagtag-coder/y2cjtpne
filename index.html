@@ -129,6 +129,17 @@ nav.side{position:sticky;top:78px;align-self:start}
 .pager{display:flex;justify-content:space-between;gap:10px;margin-top:28px;flex-wrap:wrap}
 .foot{color:var(--soft);font-size:.8rem;text-align:center;margin-top:28px;grid-column:1/-1}
 
+/* Share */
+.shr{display:flex;flex-direction:column;gap:12px}
+.shr-i{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
+.shr-i .hint{margin:4px 0 0}
+.shr-sel{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper);min-height:40px;max-width:100%}
+.shr-how{font-size:.8rem}
+.shr-h{margin:0 0 4px;font-family:var(--serif)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.copynote{margin:0 0 14px}
+dialog{max-height:calc(100vh - 32px);overflow:auto}
+
 /* Modal */
 dialog{border:0;border-radius:16px;padding:0;max-width:520px;width:calc(100% - 32px);background:var(--paper);color:var(--ink);box-shadow:0 30px 80px -20px rgba(0,0,0,.4)}
 dialog::backdrop{background:rgba(28,27,25,.45)}
@@ -192,11 +203,13 @@ dialog::backdrop{background:rgba(28,27,25,.45)}
   .pchk .bx{display:inline-block;width:4mm;height:4mm;border:1pt solid #333;margin-right:2.5mm;vertical-align:-.6mm;text-align:center;line-height:3.6mm;font-size:8pt}
   .pchk small{color:#555;display:block;margin-left:6.5mm}
   .pnote{border-left:2.5pt solid #C9A24B;background:#F7F0DE;padding:2mm 3mm;font-size:9pt;margin:2mm 0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pcard{border:.6pt solid #999;border-radius:2mm;padding:1mm 2mm;margin:0 0 3mm;page-break-inside:avoid;break-inside:avoid}
+  .pcard .pkv{margin:0}
   .pfoot{font-size:7.5pt;color:#666;margin-top:5mm;border-top:.5pt solid #ccc;padding-top:2mm}
-  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
-  .pbox{border:.8pt solid #999;border-radius:2mm;padding:3mm;page-break-inside:avoid}
+  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:3mm}
+  .pbox{border:.8pt solid #999;border-radius:2mm;padding:2.2mm 2.6mm;page-break-inside:avoid}
   .pbox h4{margin:0 0 1.5mm;font-family:var(--serif);font-size:11pt}
-  .pbox p,.pbox li{font-size:9.5pt;margin:0}
+  .pbox p,.pbox li{font-size:9pt;margin:0;line-height:1.35}
 }
 </style>
 </head>
@@ -213,7 +226,7 @@ dialog::backdrop{background:rgba(28,27,25,.45)}
     <div class="tools">
       <button class="btn cor" id="bTonight" title="Open Tonight's Page"><span aria-hidden="true">&#9733;</span><span class="lbl">Tonight<span class="lp">'s Page</span></span></button>
       <button class="btn" id="bPrint" title="Print your file"><span aria-hidden="true">&#9113;</span><span class="lbl">Print</span></button>
-      <button class="btn" id="bBackup" title="Backup and restore"><span aria-hidden="true">&#8681;</span><span class="lbl">Backup</span></button>
+      <button class="btn" id="bBackup" title="Share, save as PDF and backup"><span aria-hidden="true">&#8679;</span><span class="lbl">Share<span class="lp"> &amp; Backup</span></span></button>
       <button class="btn" id="bSettings" title="Personalise"><span aria-hidden="true">&#9881;</span><span class="lbl">Personalise</span></button>
     </div>
   </div>
@@ -249,7 +262,31 @@ dialog::backdrop{background:rgba(28,27,25,.45)}
 
 <dialog id="dBackup" aria-labelledby="dbT">
   <div class="dlg">
-    <h3 id="dbT">Backup and restore</h3>
+    <h3 id="dbT">Share and backup</h3>
+    <div class="shr">
+      <div class="shr-i">
+        <b>&#128196; Save as PDF</b>
+        <p class="hint">A finished copy anyone can read on any phone or computer. Best for your family to keep.</p>
+        <div class="row" style="justify-content:flex-start;margin-top:8px">
+          <label for="pdfScope" class="sr">What to save</label>
+          <select id="pdfScope" class="shr-sel"><option value="all">The whole file</option><option value="tonight">The summary page only</option></select>
+          <button class="btn pri" id="bPdf">Save as PDF</button>
+        </div>
+        <p class="hint shr-how">On the next screen: <b>Android or computer</b> - choose "Save as PDF" as the printer, then tap Save or the download button. <b>iPhone</b> - tap the Share icon (a box with an arrow pointing up), then "Save to Files".</p>
+      </div>
+      <div class="shr-i">
+        <b>&#128228; Send a filled copy</b>
+        <p class="hint">One file with everything already filled in. Send it on WhatsApp or email. The person opens it and sees it all, and can keep adding. For Android phones and computers.</p>
+        <div class="row" style="justify-content:flex-start;margin-top:8px"><button class="btn pri" id="bCopy">Save a filled copy</button></div>
+      </div>
+      <div class="shr-i">
+        <b>&#63743; Send to an iPhone (ZIP)</b>
+        <p class="hint">The same filled copy, packed in a ZIP with simple iPhone steps inside. iPhones block buttons in files opened straight from WhatsApp, so use this one for iPhones and iPads.</p>
+        <div class="row" style="justify-content:flex-start;margin-top:8px"><button class="btn pri" id="bZip">Save iPhone ZIP</button></div>
+      </div>
+    </div>
+    <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+    <h4 class="shr-h">Backup and restore</h4>
     <p class="hint">Your file lives only in this browser. If the browser data is cleared, it is gone. Save a backup file after each sitting and keep a copy somewhere safe (a USB stick or your own cloud storage).</p>
     <div class="row" style="justify-content:flex-start">
       <button class="btn pri" id="bExport">&#8681; Save backup file</button>
@@ -290,27 +327,38 @@ dialog::backdrop{background:rgba(28,27,25,.45)}
 "use strict";
 var KEY="tst_grabgo_family_v1";
 var VERSION=1;
+var PRISTINE="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
+var FILLED=null;
+try{var fdEl=document.getElementById("filledData");if(fdEl)FILLED=JSON.parse(fdEl.textContent);}catch(e){FILLED=null;}
+if(FILLED&&FILLED.copyId)KEY=KEY+"_copy_"+String(FILLED.copyId).replace(/[^a-z0-9]/gi,"");
 
 /* ---------- Content schema ---------- */
 var REL=["Partner / spouse","Child","Parent","Sibling","Friend","Neighbour","Colleague","Other family","Other"];
 var S=[
 {id:"start",n:"",title:"Start Here",tab:"Start here",lead:"",custom:"start"},
-{id:"tonight",n:"",title:"Tonight's Page",tab:"One-page summary",lead:"Built automatically from what you fill in. Print it for the fridge, or the front of your binder. This is the page your family reads first.",custom:"tonight"},
+{id:"tonight",n:"",title:"Tonight's Page",tab:"One-page summary",lead:"Fill it in right here, or in the sections. Print it for the fridge, or the front of your binder. This is the page your family reads first.",custom:"tonight"},
 {id:"people",n:1,title:"Me and My People",tab:"Sitting 1",lead:"Who you are, and who should be called first. Your family will start at the top of this list.",groups:[
  {g:"fields",title:"About me",fields:[
   {k:"fullName",l:"Full legal name"},{k:"knownAs",l:"Name I go by"},
   {k:"dob",l:"Date of birth",t:"date"},{k:"mobile",l:"My mobile number",t:"tel"},
   {k:"address",l:"Home address",w:1,t:"textarea"},
+  {k:"country",l:"Country I live in"},{k:"emergNo",l:"Emergency number where I live",sub:"For example 112 in the EU, 911 in the US and Canada, 999 in the UK. Check yours."},
   {k:"idLoc",l:"Where my ID and passport are kept",w:1,sub:"The place, not the numbers."},
   {k:"employer",l:"Where I work"},{k:"employerContact",l:"Work contact to call (name and number)"}
  ]},
- {g:"fields",title:"My partner",show:"partner",fields:[
-  {k:"pName",l:"Partner's full legal name"},{k:"pDob",l:"Partner's date of birth",t:"date"},
-  {k:"pMobile",l:"Partner's mobile",t:"tel"},{k:"pWork",l:"Partner's work contact"}
+ {g:"list",key:"fam",title:"More people in this file",hint:"Add your partner, a parent or grown children. Each person gets their own card on the summary page, and on the printed copy.",add:"Add a person",lab:"Person",fields:[
+  {k:"name",l:"Full name"},{k:"rel",l:"Relationship to me",t:"select",o:REL},
+  {k:"dob",l:"Date of birth",t:"date"},{k:"mobile",l:"Mobile",t:"tel"},
+  {k:"country",l:"Country they live in"},{k:"idLoc",l:"Where their ID and passport are kept",sub:"The place, not the numbers."},
+  {k:"blood",l:"Blood type",t:"select",o:["Not sure","A+","A-","B+","B-","AB+","AB-","O+","O-"]},{k:"allergies",l:"Allergies and reactions"},
+  {k:"conditions",l:"Ongoing health conditions",w:1,t:"textarea"},
+  {k:"meds",l:"Medicines, copied from the labels",w:1,t:"textarea",sub:"Name, strength and when taken. A record, not dosing advice."},
+  {k:"gp",l:"Their doctor and phone"},{k:"insurer",l:"Medical aid / health cover, and where the card is"}
  ]},
  {g:"list",key:"callOrder",title:"Call these people, in this order",hint:"Put the calmest, most organised person first, not only the closest.",add:"Add a person",lab:"Person",fields:[
   {k:"name",l:"Name"},{k:"rel",l:"Relationship",t:"select",o:REL},
-  {k:"phone",l:"Phone",t:"tel"},{k:"helps",l:"What they can help with",sub:"e.g. fetch the kids, speak to doctors, feed the dog"}
+  {k:"phone",l:"Phone",t:"tel"},{k:"helps",l:"What they can help with",sub:"e.g. fetch the kids, speak to doctors, feed the dog"},
+  {k:"country",l:"Country and time zone",sub:"e.g. Australia, 6 hours ahead of me"}
  ]},
  {g:"list",key:"pros",title:"People who already know my affairs",add:"Add a contact",lab:"Contact",fields:[
   {k:"role",l:"Role",t:"select",o:["Family doctor","Lawyer / attorney","Accountant","Financial adviser","Insurance broker","Employer / HR","Faith or community leader","Other"]},
@@ -336,11 +384,7 @@ var S=[
   {k:"name",l:"Medicine name"},{k:"str",l:"Strength (as on label)",sub:"e.g. 5 mg, 500 mg"},
   {k:"when",l:"When I take it (as prescribed)"},{k:"for",l:"What it is for"}
  ]},
- {g:"fields",title:"My partner's health",show:"partner",fields:[
-  {k:"pBlood",l:"Partner's blood type",t:"select",o:["Not sure","A+","A-","B+","B-","AB+","AB-","O+","O-"]},
-  {k:"pAllergies",l:"Partner's allergies"},{k:"pConditions",l:"Partner's conditions",w:1,t:"textarea"},
-  {k:"pMeds",l:"Partner's medicines (copied from labels)",w:1,t:"textarea"}
- ]},
+
  {g:"checks",key:"hbag",title:"Hospital grab bag",hint:"Things to pack (or for someone to bring). Tick when ready.",items:[
   ["ID document and medical aid / insurance card"],["A printed copy of Tonight's Page"],["Medicines in their original boxes"],
   ["Glasses, hearing aids, dentures and cases"],["Phone charger with a long cable"],["Key phone numbers written on paper","Phones die. Paper does not."],
@@ -373,12 +417,17 @@ var S=[
  {g:"list",key:"banks",title:"Accounts",add:"Add an account",lab:"Account",fields:[
   {k:"inst",l:"Bank or provider"},{k:"type",l:"Type",t:"select",o:["Everyday / current","Savings","Credit card","Investment","Retirement / pension","Loan or bond","Online wallet","Other"]},
   {k:"last4",l:"Last 4 digits only",mx:4},{k:"whose",l:"Whose",t:"select",o:["Mine","My partner's","Joint","Business"]},
-  {k:"contact",l:"Phone or branch to call",w:1}
+  {k:"country",l:"Country"},{k:"contact",l:"Phone or branch to call",w:1}
  ]},
  {g:"list",key:"policies",title:"Insurance and cover",hint:"Include cover that comes with your job, your bank account or your credit card. These are the easiest to forget.",add:"Add a policy",lab:"Policy",fields:[
   {k:"ins",l:"Insurer"},{k:"type",l:"Type",t:"select",o:["Life","Funeral","Disability / income protection","Dread / critical illness","Medical","Home and contents","Car","Travel","Other"]},
   {k:"via",l:"Taken out through",t:"select",o:["Myself","My employer","My bank or card","Other"]},{k:"ben",l:"Who benefits"},
-  {k:"loc",l:"Policy number, or where the document is",w:1}
+  {k:"country",l:"Country"},{k:"loc",l:"Policy number, or where the document is",w:1}
+ ]},
+ {g:"list",key:"property",title:"Property and vehicles",add:"Add property",lab:"Property",fields:[
+  {k:"what",l:"What",sub:"e.g. house, flat, plot, car"},{k:"addr",l:"Address or description"},
+  {k:"country",l:"Country"},{k:"owners",l:"Whose name it is in"},
+  {k:"papers",l:"Where the papers are kept",w:1}
  ]},
  {g:"list",key:"bills",title:"Bills and automatic payments",hint:"Before anyone cancels a card or closes an account, they need this list. Otherwise payments bounce.",add:"Add a bill",lab:"Bill",fields:[
   {k:"what",l:"What it is"},{k:"from",l:"Paid from (account last 4)"},
@@ -450,13 +499,23 @@ var S=[
   ["Ask the funeral provider what they can notify for you","Some help with official notifications. This differs by country."],
   ["Before cancelling any card, check the bills and automatic payments on it"],
   ["Tell banks and insurers. Ask each one exactly which documents they need"],
-  ["Work through Lost and Found Money"]
+  ["Tell the organisations on the Who to notify list"],["Work through Lost and Found Money"]
  ]},
  {g:"fields",title:"My wishes, in my words",fields:[
   {k:"wishes",l:"What matters most to me",w:1,t:"textarea",sub:"About care, about the children, about how I want to be remembered."},
   {k:"funeral",l:"Funeral or memorial wishes",w:1,t:"textarea"},
   {k:"willLoc",l:"Where my will is, and who drew it up",w:1},
   {k:"letters",l:"Where my letters to family are kept",w:1}
+ ]},
+ {g:"list",key:"wills",title:"Wills and legal papers, by country",hint:"With money, property or family in more than one country, you may need papers in each. Add one row per document. A lawyer in each country can tell you what is needed.",add:"Add a document",lab:"Document",fields:[
+  {k:"country",l:"Country"},{k:"kind",l:"Document",t:"select",o:["Will","Power of attorney","Advance directive / living will","Other"]},
+  {k:"loc",l:"Where the original is kept"},{k:"lawyer",l:"Lawyer or notary, and phone"},
+  {k:"date",l:"Date signed",t:"date"}
+ ]},
+ {g:"list",key:"notify",title:"Who to notify",hint:"Organisations to tell if something happens. Write where the reference or member number is kept.",add:"Add an organisation",lab:"Organisation",fields:[
+  {k:"type",l:"Type",t:"select",o:["Pension or retirement fund","Tax office","Medical aid / health insurer","Bank","Social security or state pension","Insurer","Former employer","Municipality or council","Other"]},
+  {k:"name",l:"Name"},{k:"phone",l:"Phone or website"},
+  {k:"ref",l:"Where the reference number is kept"},{k:"country",l:"Country"}
  ]}
 ]},
 {id:"current",n:"",title:"Keeping It Current",tab:"Once a year",lead:"A file that is two years old can send your family to the wrong number. Ten minutes a year keeps it true.",groups:[
@@ -476,8 +535,16 @@ var S=[
 /* ---------- State ---------- */
 var st={v:VERSION,settings:{name:"",forWhom:"me",paper:"A4",text:"16",theme:"light"},f:{},l:{},c:{},cn:{},meta:{}};
 function load(){
-  try{var raw=localStorage.getItem(KEY);if(raw){var d=JSON.parse(raw);merge(d);}}catch(e){}
-  seedLists();
+  var got=false;
+  try{var raw=localStorage.getItem(KEY);if(raw){var d=JSON.parse(raw);merge(d);got=true;}}catch(e){}
+  if(!got&&FILLED&&FILLED.data)merge(JSON.parse(JSON.stringify(FILLED.data)));
+  migrate();seedLists();
+}
+function migrate(){
+  var f=st.f;
+  if((f.pName||f.pMobile||f.pBlood||f.pAllergies||f.pConditions||f.pMeds)&&!(st.l.fam&&st.l.fam.length)){
+    st.l.fam=[{name:f.pName||"",rel:"Partner / spouse",dob:f.pDob||"",mobile:f.pMobile||"",blood:f.pBlood||"",allergies:f.pAllergies||"",conditions:f.pConditions||"",meds:f.pMeds||""}];
+  }
 }
 function merge(d){
   if(!d||typeof d!=="object")return;
@@ -489,14 +556,18 @@ function seedLists(){
     if(g.g==="list"&&g.seed&&!st.l[g.key]){st.l[g.key]=g.seed.map(function(x){return {item:x,loc:""};});}
   });});
 }
-var tSave;
+var tSave,pending=false;
+function writeNow(){
+  pending=false;clearTimeout(tSave);
+  try{localStorage.setItem(KEY,JSON.stringify(st));flash("Saved");}catch(e){flash("Not saved - storage blocked");}
+}
 function save(){
-  clearTimeout(tSave);
-  tSave=setTimeout(function(){
-    try{localStorage.setItem(KEY,JSON.stringify(st));flash("Saved");}catch(e){flash("Not saved - storage blocked");}
-  },350);
+  clearTimeout(tSave);pending=true;
+  tSave=setTimeout(writeNow,350);
   updateProgress();
 }
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"&&pending)writeNow();});
+window.addEventListener("pagehide",function(){if(pending)writeNow();});
 function flash(t){var el=$("saved");el.textContent=t;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},1800);}
 function $(id){return document.getElementById(id);}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
@@ -592,7 +663,7 @@ function pager(){
 function render(){
   var sec=S.find(function(s){return s.id===cur;})||S[0];
   var body=sec.custom==="start"?startHTML():sec.custom==="tonight"?tonightHTML():(sec.groups.map(groupHTML).join(""));
-  $("view").innerHTML='<div class="folder"><span class="tab">'+esc(sec.tab)+'</span><div class="sheet"><h2>'+esc(sec.title)+'</h2>'+(sec.lead?'<p class="lead">'+esc(sec.lead)+'</p>':'')+body+pager()+'</div></div>';
+  $("view").innerHTML=copyNote()+'<div class="folder"><span class="tab">'+esc(sec.tab)+'</span><div class="sheet"><h2>'+esc(sec.title)+'</h2>'+(sec.lead?'<p class="lead">'+esc(sec.lead)+'</p>':'')+body+pager()+'</div></div>';
 }
 function startHTML(){
   var nm=st.settings.name?esc(st.settings.name):"Your family file";
@@ -601,12 +672,27 @@ function startHTML(){
   '<div class="card"><h4><span class="dot"></span>How it works</h4><ol class="steps"><li>Do one sitting at a time. Seven short sittings, in any order.</li><li>Fill in what you know. Blanks are fine, they show you what to find later.</li><li>Print your binder, and print Tonight\'s Page for the fridge.</li><li>Show one person where it is kept.</li></ol></div>'+
   '<div class="card"><h4><span class="dot" style="background:var(--sage)"></span>Your privacy</h4><p>Everything you type stays in this browser, on this device. Nothing is sent anywhere. Because of that, <b>save a backup file</b> after each sitting.</p><p style="margin-top:10px"><button class="btn sm pri" data-open="dBackup">Backup now</button></p></div>'+
   '<div class="card"><h4><span class="dot" style="background:var(--sun)"></span>Never write here</h4><ul><li>Passwords or PINs</li><li>Full bank or card numbers</li><li>Recovery codes or crypto phrases</li><li>ID or passport numbers</li></ul><p style="margin-top:8px">Write <i>where</i> they are kept instead.</p></div>'+
-  '<div class="card"><h4><span class="dot" style="background:var(--coral)"></span>Make it yours</h4><p>Name your file, add your partner, choose A4 or US Letter, and set a larger text size.</p><p style="margin-top:10px"><button class="btn sm" data-open="dSettings">Personalise</button></p></div>'+
+  '<div class="card"><h4><span class="dot" style="background:var(--coral)"></span>Make it yours</h4><p>Name your file, choose A4 or US Letter, and set a larger text size. Add your partner, a parent or grown children in '+esc(secLabel("fam"))+'.</p><p style="margin-top:10px"><button class="btn sm" data-open="dSettings">Personalise</button></p></div>'+
   '</div><div class="note tip" style="margin-top:18px"><b>Start small:</b> fill in your call list in Sitting 1 tonight. That one list does more good than any other page.</div>'+
   '<p class="hint" style="margin-top:16px">This is an organiser. It is not a will, and it does not give legal, medical or financial advice. A will, power of attorney or advance directive must follow the laws of your country, so speak to a qualified professional for those.</p>';
 }
 function v(k){var x=String(st.f[k]||"").trim();return x?esc(x):'<span class="miss">not filled in yet</span>';}
 function fmtDate(d){if(!d)return "";try{var p=d.split("-");return p[2]+"/"+p[1]+"/"+p[0]+" (dd/mm/yyyy)";}catch(e){return d;}}
+var SECWORD="Sitting";
+function secOf(key){var r=null;S.forEach(function(sec){(sec.groups||[]).forEach(function(g){if(!r&&(g.key===key||(g.fields&&g.g==="fields"&&g.fields.some(function(f){return f.k===key;}))))r=sec;});});return r;}
+function secLabel(key){var c=secOf(key);if(!c)return "";return (c.day?"Day "+c.day+": ":c.n?SECWORD+" "+c.n+": ":"")+c.title;}
+function grp(key){var r=null;S.forEach(function(sec){(sec.groups||[]).forEach(function(g){if(g.key===key)r=g;});});return r;}
+var ME={g:"fields",title:"Me",fields:[
+  {k:"fullName",l:"Full legal name"},{k:"dob",l:"Date of birth",t:"date"},
+  {k:"mobile",l:"Mobile",t:"tel"},{k:"emergNo",l:"Emergency number where I live"},
+  {k:"address",l:"Home address",w:1,t:"textarea"},{k:"country",l:"Country I live in"},
+  {k:"idLoc",l:"Where my ID and passport are kept"},
+  {k:"blood",l:"Blood type",t:"select",o:["Not sure","A+","A-","B+","B-","AB+","AB-","O+","O-"]},{k:"allergies",l:"Allergies and reactions"},
+  {k:"conditions",l:"Ongoing health conditions",w:1,t:"textarea"},
+  {k:"gp",l:"My doctor (name and practice)"},{k:"gpPhone",l:"Doctor's phone",t:"tel"},
+  {k:"insurer",l:"Medical aid / health insurer"},{k:"insurerNo",l:"Membership number, or where the card is"}
+ ]};
+function famData(){return (st.l.fam||[]).filter(function(r){return Object.keys(r).some(function(k){return k!=="rel"&&String(r[k]||"").trim();});});}
 function tonightData(){
   var calls=(st.l.callOrder||[]).filter(function(r){return r.name||r.phone;}).slice(0,4);
   var meds=(st.l.meds||[]).filter(function(r){return r.name;});
@@ -616,16 +702,14 @@ function tonightData(){
   return {calls:calls,meds:meds,kids:kids,pets:pets,where:where};
 }
 function tonightHTML(){
-  var d=tonightData();
-  var h='<div class="cards">';
-  h+='<div class="card"><h4><span class="dot"></span>Who I am</h4><dl class="kv"><dt>Name</dt><dd>'+v("fullName")+'</dd><dt>Born</dt><dd>'+(st.f.dob?esc(fmtDate(st.f.dob)):'<span class="miss">not filled in yet</span>')+'</dd><dt>Mobile</dt><dd>'+v("mobile")+'</dd><dt>ID kept</dt><dd>'+v("idLoc")+'</dd></dl></div>';
-  h+='<div class="card"><h4><span class="dot"></span>Call first, in this order</h4>'+(d.calls.length?'<ol style="margin:0;padding-left:18px">'+d.calls.map(function(r){return '<li><b>'+esc(r.name)+'</b>'+(r.rel?' ('+esc(r.rel)+')':'')+' '+esc(r.phone||"")+'</li>';}).join("")+'</ol>':'<p class="miss">Add your call list in Sitting 1.</p>')+'</div>';
-  h+='<div class="card"><h4><span class="dot" style="background:var(--sage)"></span>Health</h4><dl class="kv"><dt>Blood type</dt><dd>'+v("blood")+'</dd><dt>Allergies</dt><dd>'+v("allergies")+'</dd><dt>Conditions</dt><dd>'+v("conditions")+'</dd><dt>Doctor</dt><dd>'+v("gp")+' '+esc(st.f.gpPhone||"")+'</dd><dt>Cover</dt><dd>'+v("insurer")+'</dd></dl></div>';
-  h+='<div class="card"><h4><span class="dot" style="background:var(--sage)"></span>Medicines</h4>'+(d.meds.length?'<ul>'+d.meds.map(function(r){return '<li><b>'+esc(r.name)+'</b> '+esc(r.str||"")+(r.when?' - '+esc(r.when):'')+'</li>';}).join("")+'</ul>':'<p class="miss">None listed yet (Sitting 2).</p>')+'</div>';
-  h+='<div class="card"><h4><span class="dot" style="background:var(--sun)"></span>Children and pets</h4>'+((d.kids.length||d.pets.length)?'<ul>'+d.kids.map(function(r){return '<li><b>'+esc(r.name)+'</b>: '+esc(r.school||"")+(r.pickup?' - '+esc(r.pickup):'')+'</li>';}).join("")+d.pets.map(function(r){return '<li><b>'+esc(r.name)+'</b>: '+esc(r.food||"")+(r.carer?' - goes to '+esc(r.carer):'')+'</li>';}).join("")+'</ul>':'<p class="miss">Add them in Sitting 3.</p>')+'</div>';
-  h+='<div class="card"><h4><span class="dot" style="background:var(--sun)"></span>Where things are</h4>'+(d.where.length?'<ul>'+d.where.slice(0,8).map(function(r){return '<li><b>'+esc(r.item)+'</b>: '+esc(r.loc)+'</li>';}).join("")+'</ul>':'<p class="miss">Fill in locations in Sitting 3.</p>')+'<p style="margin-top:8px"><b>Passwords:</b> '+v("pwWhere")+'</p></div>';
-  h+='</div><div class="note sun" style="margin-top:16px"><b>Next:</b> turn to "If Something Happens to Me" for the step-by-step lists.</div>';
-  h+='<p style="margin-top:14px"><button class="btn cor" id="bPrintTonight">&#9113; Print this page for the fridge</button></p>';
+  var d=tonightData(),h='<div class="note tip" style="margin:0 0 6px"><b>Fill it in right here.</b> Everything you type on this page also appears in the sections, and the other way round.</div>';
+  h+=groupHTML(ME);
+  ["callOrder","meds","fam"].forEach(function(k){var g=grp(k);if(g)h+=groupHTML(g);});
+  h+='<section class="grp"><h3>Also on the printed page</h3><div class="cards">';
+  h+='<div class="card"><h4><span class="dot" style="background:var(--sun)"></span>Children and pets</h4>'+((d.kids.length||d.pets.length)?'<ul>'+d.kids.map(function(r){return '<li><b>'+esc(r.name)+'</b>: '+esc(r.school||"")+(r.pickup?' - '+esc(r.pickup):'')+'</li>';}).join("")+d.pets.map(function(r){return '<li><b>'+esc(r.name)+'</b>: '+esc(r.food||"")+(r.carer?' - goes to '+esc(r.carer):'')+'</li>';}).join("")+'</ul>':'<p class="miss">None added. Add them in '+esc(secLabel("kids"))+'.</p>')+'</div>';
+  h+='<div class="card"><h4><span class="dot" style="background:var(--sun)"></span>Where things are</h4>'+(d.where.length?'<ul>'+d.where.slice(0,8).map(function(r){return '<li><b>'+esc(r.item)+'</b>: '+esc(r.loc)+'</li>';}).join("")+'</ul>':'<p class="miss">Fill in locations in '+esc(secLabel("where"))+'.</p>')+'<p style="margin-top:8px"><b>Passwords:</b> '+v("pwWhere")+'</p></div>';
+  h+='</div></section><div class="note sun" style="margin-top:16px"><b>Next:</b> '+esc(secLabel("h24"))+' has the step-by-step lists for your family.</div>';
+  h+='<p style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn cor" id="bPrintTonight">&#9113; Print this page</button><button class="btn" data-open="dBackup">&#8679; Save as PDF or share</button></p>';
   return h;
 }
 
@@ -677,7 +761,9 @@ function openDlg(id){
 ["sName","sFor","sPaper","sText","sTheme"].forEach(function(id){
   $(id).addEventListener(id==="sName"?"input":"change",function(){
     var map={sName:"name",sFor:"forWhom",sPaper:"paper",sText:"text",sTheme:"theme"};
-    st.settings[map[id]]=this.value;applySettings();save();if(id==="sFor"||id==="sName"){buildNav();render();}
+    st.settings[map[id]]=this.value;
+    if(id==="sFor"&&this.value==="partner"&&!(st.l.fam||[]).some(function(r){return r.rel==="Partner / spouse";})){(st.l.fam=st.l.fam||[]).unshift({rel:"Partner / spouse"});}
+    applySettings();save();if(id==="sFor"||id==="sName"){buildNav();render();}
   });
 });
 function applySettings(){
@@ -706,7 +792,7 @@ $("fImport").onchange=function(){
       if(!d||typeof d!=="object"||!(d.f||d.l))throw 0;
       $("dBackup").close();
       ask("Replace what is on this device with the backup from "+(j.saved?new Date(j.saved).toLocaleDateString():"this file")+"?",function(){
-      st={v:VERSION,settings:{name:"",forWhom:"me",paper:"A4",text:"16",theme:"light"},f:{},l:{},c:{},cn:{},meta:{}};merge(d);seedLists();
+      st={v:VERSION,settings:{name:"",forWhom:"me",paper:"A4",text:"16",theme:"light"},f:{},l:{},c:{},cn:{},meta:{}};merge(d);migrate();seedLists();
       applySettings();save();buildNav();render();toast("Backup restored");
       });
     }catch(e){toast("That file is not a Family File backup");}
@@ -715,11 +801,78 @@ $("fImport").onchange=function(){
 $("bWipe").onclick=function(){
   $("dBackup").close();
   ask("Clear everything in this file on this device? This cannot be undone. Save a backup first if you may need it.",function(){
-  try{localStorage.removeItem(KEY);}catch(e){}
   st={v:VERSION,settings:{name:"",forWhom:"me",paper:"A4",text:"16",theme:"light"},f:{},l:{},c:{},cn:{},meta:{}};seedLists();
+  try{if(FILLED)localStorage.setItem(KEY,JSON.stringify(st));else localStorage.removeItem(KEY);}catch(e){}
   applySettings();buildNav();cur="start";render();toast("Cleared");
   });
 };
+
+/* ---------- Share: PDF, filled copy, iPhone ZIP ---------- */
+function product(){var h=document.querySelector(".brand h1");return h?h.textContent.trim():"Family File";}
+function slug(x){return String(x||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40);}
+function who(){return (st.settings.name||st.f.fullName||"").trim();}
+function today(){return new Date().toISOString().slice(0,10);}
+function copyName(ext){var w=slug(who());return slug(product())+(w?"-"+w:"")+"-"+today()+ext;}
+function download(blob,name){
+  var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1500);
+}
+var SC="scr"+"ipt";
+function filledHTML(){
+  var payload={copyId:Date.now().toString(36)+Math.random().toString(36).slice(2,8),made:new Date().toISOString(),from:who(),product:product(),data:st};
+  var json=JSON.stringify(payload).replace(/</g,"\\u003c");
+  var old=new RegExp("<"+SC+" type=\"application/json\" id=\"filledData\">[\\s\\S]*?</"+SC+">\\s*");
+  var src=PRISTINE.replace(old,"");
+  var mark="<"+SC+">\n(function(){";
+  var i=src.lastIndexOf(mark);
+  if(i<0)throw new Error("source");
+  return src.slice(0,i)+"<"+SC+" type=\"application/json\" id=\"filledData\">"+json+"</"+SC+">\n"+src.slice(i);
+}
+var CRC=(function(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?(0xEDB88320^(c>>>1)):(c>>>1);t[n]=c>>>0;}return t;})();
+function crc32(u){var c=0xFFFFFFFF;for(var i=0;i<u.length;i++)c=CRC[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function makeZip(files){
+  var enc=new TextEncoder(),parts=[],central=[],off=0,d=new Date();
+  var tm=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1),dt=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate();
+  files.forEach(function(f){
+    var nm=enc.encode(f.name),data=f.data,crc=crc32(data),sz=data.length;
+    var h=new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint16(10,tm,true);h.setUint16(12,dt,true);
+    h.setUint32(14,crc,true);h.setUint32(18,sz,true);h.setUint32(22,sz,true);h.setUint16(26,nm.length,true);h.setUint16(28,0,true);
+    parts.push(new Uint8Array(h.buffer),nm,data);
+    var c=new DataView(new ArrayBuffer(46));
+    c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);c.setUint16(12,tm,true);c.setUint16(14,dt,true);
+    c.setUint32(16,crc,true);c.setUint32(20,sz,true);c.setUint32(24,sz,true);c.setUint16(28,nm.length,true);c.setUint16(30,0,true);c.setUint16(32,0,true);
+    c.setUint16(34,0,true);c.setUint16(36,0,true);c.setUint32(38,0,true);c.setUint32(42,off,true);
+    central.push(new Uint8Array(c.buffer),nm);
+    off+=30+nm.length+sz;
+  });
+  var cd=central.reduce(function(a,b){return a+b.length;},0),e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cd,true);e.setUint32(16,off,true);
+  return new Blob(parts.concat(central,[new Uint8Array(e.buffer)]),{type:"application/zip"});
+}
+var IPHONE_STEPS=["How to open this file on an iPhone or iPad","",
+ "1. In WhatsApp, tap the ZIP file. Tap the Share icon (a box with an arrow pointing up) and choose Save to Files.",
+ "2. Open the Files app and tap the ZIP file. It opens into a folder.",
+ "3. Open the folder and tap the file that ends in .html.",
+ "4. If the buttons do not work, tap the Share icon and choose Open in Safari.",
+ "5. Everything is already filled in. Changes you make save only on that iPhone. Use Share & Backup in the file to save a backup or a PDF.","",
+ "Do not use the file inside the WhatsApp preview. iPhones block the buttons there.",""].join("\r\n");
+$("bPdf").onclick=function(){$("dBackup").close();doPrint($("pdfScope").value);};
+$("bCopy").onclick=function(){
+  try{download(new Blob([filledHTML()],{type:"text/html"}),copyName(".html"));toast("Filled copy saved. Send it on WhatsApp or email.");}
+  catch(e){toast("Could not make the filled copy. Please save a backup file instead.");}
+};
+$("bZip").onclick=function(){
+  try{var enc=new TextEncoder(),base=copyName("");
+    var z=makeZip([{name:base+".html",data:enc.encode(filledHTML())},{name:"How to open on iPhone.txt",data:enc.encode(IPHONE_STEPS)}]);
+    download(z,base+"-iPhone.zip");toast("iPhone ZIP saved. Send it on WhatsApp.");}
+  catch(e){toast("Could not make the ZIP. Please save a filled copy instead.");}
+};
+function copyNote(){
+  if(!FILLED)return "";
+  var dt="";try{dt=new Date(FILLED.made).toLocaleDateString();}catch(e){}
+  return '<div class="note sun copynote"><b>Filled copy</b> '+(FILLED.from?'from '+esc(FILLED.from)+', ':'')+'made on '+esc(dt)+'. Changes you make save only on this device. To send changes back, tap Share &amp; Backup and save a new filled copy.</div>';
+}
 
 /* ---------- Print binder ---------- */
 function doPrint(scope){
@@ -745,6 +898,11 @@ function buildPrint(scope){
       if(g.g==="list"){
         var rows=blank?(g.seed?g.seed.map(function(s){return {item:s};}):[]):(st.l[g.key]||[]).filter(function(r){return Object.keys(r).some(function(k){return String(r[k]||"").trim();});});
         var extra=blank?Math.max(4,8-rows.length):2;
+        if(g.fields.length>5){
+          var cl=rows.slice();if(blank||!cl.length)cl=cl.concat(blank?[{},{}]:[{}]);
+          h+=cl.map(function(r){return '<div class="pcard"><table class="pkv">'+g.fields.map(function(f){return '<tr><td>'+esc(f.l)+'</td><td>'+esc(f.t==="date"?fmtDate(r[f.k]):(r[f.k]||""))+'</td></tr>';}).join("")+'</table></div>';}).join("");
+          return;
+        }
         var pf=g.fields.slice(0,5);
         h+='<table class="ptbl"><thead><tr>'+pf.map(function(f){return '<th>'+esc(f.l)+'</th>';}).join("")+'</tr></thead><tbody>'+
           rows.map(function(r){return '<tr>'+pf.map(function(f){return '<td>'+esc(r[f.k]||"")+'</td>';}).join("")+'</tr>';}).join("")+
@@ -757,17 +915,24 @@ function buildPrint(scope){
   });
   return out;
 }
+function famPrint(){
+  var fam=famData();if(!fam.length)return "";
+  return '<h3 class="ph3">Other people in this file</h3><div class="pgrid">'+fam.map(function(r){
+    function x(k){return esc(r[k]||"")||"______";}
+    return '<div class="pbox"><h4>'+x("name")+(r.rel?' ('+esc(r.rel)+')':'')+'</h4><p>Born: '+(esc(fmtDate(r.dob))||"______")+' &middot; Mobile: '+x("mobile")+'</p><p>Lives in: '+x("country")+' &middot; ID kept: '+x("idLoc")+'</p><p>Blood type: '+x("blood")+' &middot; Allergies: '+x("allergies")+'</p><p>Conditions: '+x("conditions")+'</p><p>Medicines: '+x("meds")+'</p><p>Doctor: '+x("gp")+'</p><p>Cover: '+x("insurer")+'</p></div>';
+  }).join("")+'</div>';
+}
 function tonightPrint(){
   var d=tonightData();
   function pvv(k){return esc(st.f[k]||"")||"______________";}
-  var h='<div class="pp"><span class="ptab">Read this first</span><h2 class="ph2">Tonight\'s Page'+(st.settings.name?' - '+esc(st.settings.name):'')+'</h2><p class="plead">If I cannot speak for myself, start here. The full file is behind this page.</p><div class="pgrid">';
-  h+='<div class="pbox"><h4>Who I am</h4><p>'+pvv("fullName")+'</p><p>Born: '+(esc(fmtDate(st.f.dob))||"______________")+'</p><p>Mobile: '+pvv("mobile")+'</p><p>ID kept: '+pvv("idLoc")+'</p></div>';
-  h+='<div class="pbox"><h4>Call first, in this order</h4><ol style="margin:0;padding-left:5mm">'+(d.calls.length?d.calls.map(function(r){return '<li>'+esc(r.name)+(r.rel?' ('+esc(r.rel)+')':'')+' '+esc(r.phone||"")+'</li>';}).join(""):'<li>______________</li><li>______________</li><li>______________</li>')+'</ol></div>';
+  var h='<div class="pp"><span class="ptab">Read this first</span><h2 class="ph2">Tonight\'s Page'+(st.settings.name?' - '+esc(st.settings.name):'')+'</h2><p class="plead">If I cannot speak for myself, start here. The full file is behind this page. Step-by-step lists: '+esc(secLabel("h24"))+'.</p><div class="pgrid">';
+  h+='<div class="pbox"><h4>Who I am</h4><p>'+pvv("fullName")+'</p><p>Born: '+(esc(fmtDate(st.f.dob))||"______________")+'</p><p>Mobile: '+pvv("mobile")+'</p><p>Address: '+pvv("address")+(st.f.country?', '+esc(st.f.country):'')+'</p><p><b>Emergency number: '+pvv("emergNo")+'</b></p><p>ID kept: '+pvv("idLoc")+'</p></div>';
+  h+='<div class="pbox"><h4>Call first, in this order</h4><ol style="margin:0;padding-left:5mm">'+(d.calls.length?d.calls.map(function(r){return '<li>'+esc(r.name)+(r.rel?' ('+esc(r.rel)+')':'')+' '+esc(r.phone||"")+(r.country?' - '+esc(r.country):'')+'</li>';}).join(""):'<li>______________</li><li>______________</li><li>______________</li>')+'</ol></div>';
   h+='<div class="pbox"><h4>Health</h4><p>Blood type: '+pvv("blood")+'</p><p>Allergies: '+pvv("allergies")+'</p><p>Conditions: '+pvv("conditions")+'</p><p>Doctor: '+pvv("gp")+' '+esc(st.f.gpPhone||"")+'</p><p>Cover: '+pvv("insurer")+' '+esc(st.f.insurerNo||"")+'</p></div>';
   h+='<div class="pbox"><h4>Medicines (as on labels)</h4><ul style="margin:0;padding-left:5mm">'+(d.meds.length?d.meds.map(function(r){return '<li>'+esc(r.name)+' '+esc(r.str||"")+(r.when?' - '+esc(r.when):'')+'</li>';}).join(""):'<li>______________</li><li>______________</li>')+'</ul></div>';
   h+='<div class="pbox"><h4>Children and pets</h4><ul style="margin:0;padding-left:5mm">'+((d.kids.length||d.pets.length)?d.kids.map(function(r){return '<li>'+esc(r.name)+': '+esc(r.school||"")+(r.pickup?' - '+esc(r.pickup):'')+'</li>';}).join("")+d.pets.map(function(r){return '<li>'+esc(r.name)+': '+esc(r.food||"")+(r.carer?' - goes to '+esc(r.carer):'')+'</li>';}).join(""):'<li>______________</li>')+'</ul></div>';
   h+='<div class="pbox"><h4>Where things are</h4><ul style="margin:0;padding-left:5mm">'+(d.where.length?d.where.slice(0,8).map(function(r){return '<li>'+esc(r.item)+': '+esc(r.loc)+'</li>';}).join(""):'<li>______________</li>')+'<li>Passwords: '+pvv("pwWhere")+'</li></ul></div>';
-  h+='</div><div class="pnote" style="margin-top:4mm"><b>Next:</b> see "If Something Happens to Me" for the step-by-step lists.</div><div class="pfoot">Grab-and-Go Family File - The Snag Tag. An organiser, not medical advice. Printed '+new Date().toLocaleDateString()+'.</div></div>';
+  h+='</div>'+famPrint()+'<div class="pfoot">Grab-and-Go Family File - The Snag Tag. An organiser, not medical advice. Printed '+new Date().toLocaleDateString()+'.</div></div>';
   return h;
 }
 
