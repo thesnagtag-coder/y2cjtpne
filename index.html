@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json" data-app>
+<meta name="theme-color" content="#4A4640" data-app>
+<meta name="mobile-web-app-capable" content="yes" data-app>
+<meta name="apple-mobile-web-app-capable" content="yes" data-app>
+<meta name="apple-mobile-web-app-status-bar-style" content="default" data-app>
+<meta name="apple-mobile-web-app-title" content="Grab-and-Go" data-app>
+<link rel="icon" href="icon-192.png" data-app>
+<link rel="apple-touch-icon" href="apple-touch-icon.png" data-app>
 <meta name="robots" content="noindex, nofollow">
 <title>Grab-and-Go Family File | The Snag Tag</title>
 <meta name="description" content="A short, fillable family file: who to call, health basics, kids, pets, money and digital life in one place, so your family knows what to do tonight if you are in hospital. Works offline, prints to A4 or US Letter.">
@@ -822,7 +830,7 @@ function filledHTML(){
   var payload={copyId:Date.now().toString(36)+Math.random().toString(36).slice(2,8),made:new Date().toISOString(),from:who(),product:product(),data:st};
   var json=JSON.stringify(payload).replace(/</g,"\\u003c");
   var old=new RegExp("<"+SC+" type=\"application/json\" id=\"filledData\">[\\s\\S]*?</"+SC+">\\s*");
-  var src=PRISTINE.replace(old,"");
+  var src=PRISTINE.replace(old,"").replace(/<(?:link|meta)\b[^>]*\bdata-app\b[^>]*>\n?/g,"");
   var mark="<"+SC+">\n(function(){";
   var i=src.lastIndexOf(mark);
   if(i<0)throw new Error("source");
@@ -944,5 +952,6 @@ window.addEventListener("beforeprint",function(){if(!$("printArea").innerHTML)$(
 window.addEventListener("afterprint",function(){$("printArea").innerHTML="";});
 })();
 </script>
+<script>if("serviceWorker" in navigator&&window.isSecureContext&&/^https?:$/.test(location.protocol)&&!document.getElementById("filledData")){navigator.serviceWorker.register("sw.js").catch(function(){})}</script>
 </body>
 </html>
